@@ -1,0 +1,3 @@
+CREATE TABLE history (sequental_id integer primary key autoincrement, card_id, time default current_timestamp);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE slave (ip primary key, name);
