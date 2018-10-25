@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "b": "node ./bin/www",
-    "f": "pushd front ; npm run dev ; popd"
+    "f": "pushd front ; npm run dev ; popd",
+    "initTbl": "rm history.sqlite3; sqlite3 history.sqlite3 '.read schema'"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

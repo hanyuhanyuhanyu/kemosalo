@@ -1,4 +1,4 @@
 CREATE TABLE history (sequental_id integer primary key autoincrement, card_id, time default current_timestamp, lane_id);
 CREATE TABLE lane (ip primary key, name, kind default 'slave');
-insert into lane (ip, name, kind) values (1,'mas', 'master');
-insert into lane (ip, name, kind) values (10,'sla', 'slave');
+insert into lane (ip, name, kind) values ('1.1.1.1','mas', 'master');
+insert into lane (ip, name, kind) values ('2.2.2.2','sla', 'slave');
