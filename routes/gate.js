@@ -4,12 +4,6 @@ const PassageService = require('../lib/service/PassageService.js')
 
 const passService = new PassageService()
 
-/* GET users listing. */
-// / => 直近n個の通過履歴を取得
-// /history/:cardId => get.指定されたカードの5個ぐらいの履歴を取得
-  //*実装未定 /history/:lane => get.指定されたレーンの5個ぐらいの履歴を取得
-// /pass/master => post.総合ゲートを通過。params={cardId, lane}
-// /pass/slave/:lane => post.個別レーンを通過。params={cardId, lane}
 
 router.get('/', async function(req, res, next) {
   try{
