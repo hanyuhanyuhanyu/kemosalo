@@ -1,4 +1,16 @@
 CREATE TABLE history (sequental_id integer primary key autoincrement, card_id, time default current_timestamp, lane_id);
 CREATE TABLE lane (ip primary key, name, kind default 'slave');
-insert into lane (ip, name, kind) values ('1.1.1.1','mas', 'master');
-insert into lane (ip, name, kind) values ('2.2.2.2','sla', 'slave');
+CREATE TABLE watched_terminal (ip primary key, name);
+
+insert into lane (ip, name, kind) values ('192.168.20.60','gate', 'master');
+
+insert into lane (ip, name, kind) values ('192.168.20.61','lane1', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.62','lane2', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.63','lane3', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.64','lane4', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.65','lane5', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.66','lane6', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.67','lane7', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.68','lane8', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.69','lane9', 'slave');
+insert into lane (ip, name, kind) values ('192.168.20.70','lane10', 'slave');
