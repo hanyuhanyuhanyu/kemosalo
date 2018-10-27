@@ -8,6 +8,7 @@
     "initTbl": "rm history.sqlite3; sqlite3 history.sqlite3 '.read schema'"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",

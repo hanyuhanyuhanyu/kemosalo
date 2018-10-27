@@ -1,17 +1,53 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <div v-for='lane in laneObjs' :key='lane.ip'>
+      {{lane.ip}} => {{lane.alive}}
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+const selfip = process.env.KEMOSALO_SERVER_IP
+const axiosBase = require('axios');
+import LaneStatus from './assets/laneStatus.js';
 
+const axios = axiosBase.create({
+  baseURL: `http://${selfip}:3000/api`
+});
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      socket: null,
+      hoge: 123,
+      lanes: {},
+    }
+  },
+  mounted: async function () {
+    try{
+      const ips = await axios.get('/gate/all')
+      ips.data.forEach(l => {
+        this.$set(this.lanes, l.ip, new LaneStatus(l.ip, l.name, l.kind))
+      })
+      this.socket = io(`ws://${selfip}:3000`);
+      this.socket.emit('pingThem');
+      this.socket.on('connectionAscertained', (ip, time) => {
+        this.lanes[ip].access(time)
+      })
+      this.socket.on('connectionLost', ip => {
+        this.lanes[ip].disconnect()
+      })
+    } catch(e) {
+      console.log('booting failed')
+      console.log(e)
+    }
+  },
+  computed: {
+    laneObjs: function(){
+      const ret = []
+      Object.keys(this.lanes).forEach(k => ret.push(this.lanes[k]))
+      return ret
+    }
   }
 }
 </script>

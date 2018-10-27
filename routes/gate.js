@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const PassageService = require('../lib/service/PassageService.js')
+const LaneService = require('../lib/service/LaneService.js')
 
 const passService = new PassageService()
+const laneService = new LaneService()
 
 
 router.get('/', async function(req, res, next) {
@@ -16,6 +18,17 @@ router.get('/', async function(req, res, next) {
     res.send();
   }
 });
+router.get('/all', async function(req, res, next) {
+  try{
+    const message = await laneService.getAll();
+    res.status(200);
+    res.send(message.object);
+  } catch(e) {
+    console.log(e);
+    res.status(500);
+    res.send();
+  }
+})
 router.get('/history/:card', async function(req, res, next) {
   try {
     const message = await passService.findByCard(req.params.card);

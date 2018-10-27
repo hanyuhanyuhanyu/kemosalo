@@ -8,10 +8,17 @@ var indexRouter = require('./routes/index');
 var gateRouter = require('./routes/gate');
 
 var app = express();
+// var wsServer = require('http').Server(app);
+// var io = require('socket.io')(wsServer);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,3 +45,10 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+// io.on('connection', function(socket){
+//     console.log('user connection')
+// })
+// wsServer.listen(3030, function(){
+//     console.log('websocket server ready, listening on 3030')
+// })
