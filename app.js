@@ -8,8 +8,6 @@ var indexRouter = require('./routes/index');
 var gateRouter = require('./routes/gate');
 
 var app = express();
-// var wsServer = require('http').Server(app);
-// var io = require('socket.io')(wsServer);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -45,10 +43,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-// io.on('connection', function(socket){
-//     console.log('user connection')
-// })
-// wsServer.listen(3030, function(){
-//     console.log('websocket server ready, listening on 3030')
-// })

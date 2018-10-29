@@ -5,7 +5,8 @@ const LaneService = require('../lib/service/LaneService.js')
 
 const passService = new PassageService()
 const laneService = new LaneService()
-
+const io = require('socket.io-client');
+const socket = io(`ws://127.0.0.1:3000`);
 
 router.get('/', async function(req, res, next) {
   try{

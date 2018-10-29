@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+const webSocketSetting = require('./websocket.js');
 /**
  * Module dependencies.
  */
@@ -8,7 +8,6 @@ var app = require('../app');
 var debug = require('debug')('kemosalo:server');
 var http = require('http');
 
-const webSocketSetting = require('./websocket.js')
 
 /**
  * Get port from environment and store in Express.
@@ -28,9 +27,10 @@ var io = require('socket.io')(server);
  * Listen on provided port, on all network interfaces.
  */
 
-io.on('connection', webSocketSetting)
+io = webSocketSetting(io)
+
 server.listen(port, function(){
-    console.log('websocket server ready, listening on 3030')
+  console.log('websocket server ready, listening on 3000')
 });
 server.on('error', onError);
 server.on('listening', onListening);
