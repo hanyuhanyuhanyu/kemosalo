@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const PassageService = require('../lib/service/PassageService.js')
-const LaneService = require('../lib/service/LaneService.js')
+const PassageService = require('../lib/service/PassageService.js');
+const LaneService = require('../lib/service/LaneService.js');
+const WebSocket = require('../lib/websocket/websocket.js');
 
-const passService = new PassageService()
-const laneService = new LaneService()
-const io = require('socket.io-client');
-const socket = io(`ws://127.0.0.1:3000`);
+const passService = new PassageService();
+const laneService = new LaneService();
+const webSocket = new WebSocket();
 
 router.get('/', async function(req, res, next) {
   try{
@@ -47,9 +47,11 @@ router.post('/pass/master', async function(req, res, next) {
   const message = await passService.accessMaster(card, lane);
 
   if(message.isErr){
-    res.status(message.httpCode)
+    res.status(message.httpCode);
+    webSocket.masterPassFailed();
   } else {
-    res.status(200)
+    res.status(200);
+    webSocket.masterPass();
   }
   res.send(message.object)
 })

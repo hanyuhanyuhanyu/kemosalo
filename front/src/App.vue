@@ -31,7 +31,6 @@ export default {
       })
       this.socket = io(`ws://${selfip}:3000`);
       this.socket.emit('pingThem');
-      this.socket.emit('pingThem');
       this.socket.on('connectionAscertained', (ip, time) => {
         this.lanes[ip].access(time)
       })

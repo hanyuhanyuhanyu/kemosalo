@@ -27,6 +27,9 @@ module.exports = function(io){
         }, 5000)
       })
     })
+    socket.on('masterPass', (key, value) => {
+
+    })
     socket.on('disconnect', () => {
       pingCmdIds.forEach(p => clearInterval(p))
     })
