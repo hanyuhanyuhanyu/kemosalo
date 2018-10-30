@@ -30,12 +30,24 @@ export default {
         this.$set(this.lanes, l.ip, new LaneStatus(l.ip, l.name, l.kind))
       })
       this.socket = io(`ws://${selfip}:3000`);
-      this.socket.emit('pingThem');
+      this.socket.emit('initialize');
       this.socket.on('connectionAscertained', (ip, time) => {
         this.lanes[ip].access(time)
       })
       this.socket.on('connectionLost', ip => {
         this.lanes[ip].disconnect()
+      })
+      this.socket.on('masterPass', () => {
+        console.log('masterPass')
+      })
+      this.socket.on('masterPassFailed', () => {
+        console.log('masterPassFailed')
+      })
+      this.socket.on('slavePass', (lane) => {
+        console.log('slavePass', lane)
+      })
+      this.socket.on('slavePassFailed', (lane) => {
+        console.log('slavePassFailed', lane)
       })
     } catch(e) {
       console.log('booting failed')

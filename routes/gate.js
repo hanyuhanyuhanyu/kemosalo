@@ -62,10 +62,11 @@ router.post('/pass/slave/:lane', async function(req, res, next) {
   const message = await passService.accessSlave(card, lane);
   if(message.isErr){
     res.status(message.httpCode)
+    webSocket.slavePassFailed(lane)
   } else {
     res.status(200)
+    webSocket.slavePass(lane)
   }
-  // ここで監視画面に通知がほしい => 多分websocket
   res.send()
 })
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
+const initRedis = require('../lib/redis/Initializer.js');
 const webSocketSetting = require('./websocket.js');
+
+initRedis();
+
 /**
  * Module dependencies.
  */
