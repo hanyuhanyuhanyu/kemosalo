@@ -38,33 +38,37 @@ module.exports = function(io){
         }, 5000)
       })
     })
-    socket.on('masterPass', async (key, val) => {
+    socket.on('masterPass', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
+      console.log(ip, card)
       const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('masterPass'))
+      ids.forEach(id => socket.to(id).emit('masterPass', ip, card))
     })
-    socket.on('masterPassFailed', async (key, val) => {
+    socket.on('masterPassFailed', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
+      console.log(ip, card)
       const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('masterPassFailed'))
+      ids.forEach(id => socket.to(id).emit('masterPassFailed', ip, card))
     })
-    socket.on('slavePass', async (key, val, lane) => {
+    socket.on('slavePass', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
+      console.log(ip, card)
       const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('slavePass', lane))
+      ids.forEach(id => socket.to(id).emit('slavePass', ip, card))
     })
-    socket.on('slavePassFailed', async (key, val, lane) => {
+    socket.on('slavePassFailed', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
+      console.log(ip, card)
       const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('slavePassFailed', lane))
+      ids.forEach(id => socket.to(id).emit('slavePassFailed', ip, card))
     })
     socket.on('disconnect', () => {
       pingCmdIds.forEach(p => clearInterval(p))

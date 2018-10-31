@@ -45,13 +45,12 @@ router.post('/pass/master', async function(req, res, next) {
   const card = req.body.card;
   const lane = req.body.lane;
   const message = await passService.accessMaster(card, lane);
-
   if(message.isErr){
     res.status(message.httpCode);
-    webSocket.masterPassFailed();
+    webSocket.masterPassFailed([lane, card]);
   } else {
     res.status(200);
-    webSocket.masterPass();
+    webSocket.masterPass([lane, card]);
   }
   res.send(message.object)
 })
@@ -62,10 +61,10 @@ router.post('/pass/slave/:lane', async function(req, res, next) {
   const message = await passService.accessSlave(card, lane);
   if(message.isErr){
     res.status(message.httpCode)
-    webSocket.slavePassFailed(lane)
+    webSocket.slavePassFailed([lane, card])
   } else {
     res.status(200)
-    webSocket.slavePass(lane)
+    webSocket.slavePass([lane, card])
   }
   res.send()
 })

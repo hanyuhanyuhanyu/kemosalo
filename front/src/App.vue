@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <div v-for='lane in laneObjs' :key='lane.ip'>
-      {{lane.ip}} => {{lane.alive}}
+    <access-log
+      :logs='logs'
+    >
+    </access-log>
+    <div class='laneWrapper' v-for='chunk in laneChunks()' :key='chunk.key'>
+      <single-lane
+        v-for='lane in chunk.arr'
+        :key='lane.ip'
+        :lane='lane'
+      ></single-lane>
     </div>
   </div>
 </template>
@@ -10,17 +18,33 @@
 const selfip = process.env.KEMOSALO_SERVER_IP
 const axiosBase = require('axios');
 import LaneStatus from './assets/laneStatus.js';
+import Log from './assets/Log.js';
+
+import AccessLog from './components/AccessLog.vue';
+import SingleLane from './components/Lane.vue';
 
 const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
 });
+
+const logMax = 10;
 export default {
   name: 'App',
-  data () {
+  data: () => {
     return {
       socket: null,
       hoge: 123,
       lanes: {},
+      logs: [],
+      logNum: 0,
+    }
+  },
+  methods: {
+    addLog: function(ip, card, error = null){
+      if(this.logs.length >= logMax){
+        this.logs.pops();
+      }
+      this.logs.unshift(new Log(this.logNum++, ip, card, error));
     }
   },
   mounted: async function () {
@@ -37,17 +61,21 @@ export default {
       this.socket.on('connectionLost', ip => {
         this.lanes[ip].disconnect()
       })
-      this.socket.on('masterPass', () => {
+      this.socket.on('masterPass', (ip, card) => {
         console.log('masterPass')
+        this.addLog(ip, card);
       })
-      this.socket.on('masterPassFailed', () => {
+      this.socket.on('masterPassFailed', (ip, card) => {
         console.log('masterPassFailed')
+        this.addLog(ip, card);
       })
-      this.socket.on('slavePass', (lane) => {
+      this.socket.on('slavePass', (ip, card) => {
         console.log('slavePass', lane)
+        this.addLog(ip, card);
       })
-      this.socket.on('slavePassFailed', (lane) => {
+      this.socket.on('slavePassFailed', (ip, card) => {
         console.log('slavePassFailed', lane)
+        this.addLog(ip, card);
       })
     } catch(e) {
       console.log('booting failed')
@@ -55,11 +83,29 @@ export default {
     }
   },
   computed: {
-    laneObjs: function(){
-      const ret = []
-      Object.keys(this.lanes).forEach(k => ret.push(this.lanes[k]))
-      return ret
+    laneChunks: function(){
+      return (chunk = 5) => {
+        const ret = []
+        let buf = []
+        let i = 0
+        Object.keys(this.lanes).forEach(k => {
+          buf.push(this.lanes[k]);
+          i++;
+          if(i % chunk === 0){
+            ret.push({key: i, arr: buf});
+            buf = [];
+          }
+        })
+        if(buf.length > 0){
+          ret.push({key: i, arr: buf});
+        }
+        return ret
+      }
     }
+  },
+  components: {
+    'single-lane': SingleLane,
+    'access-log': AccessLog
   }
 }
 </script>
@@ -72,5 +118,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.laneWrapper{
+  display: flex;
+  justify-items: center;
+  align-items: center;
 }
 </style>
