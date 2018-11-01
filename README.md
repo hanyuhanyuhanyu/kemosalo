@@ -23,34 +23,34 @@
 
 各ゲートの通過の記録および履歴参照を担う
 
-##### GET => /api/gate
+#### GET => /api/gate
 
 それまでのゲート通過履歴のうち最新100件を返す
 
-##### GET => /api/gate/all
+#### GET => /api/gate/all
 
 すべてのゲートのIPアドレスを返す
 
-##### GET => /api/gate/history/(カードのID)
+#### GET => /api/gate/history/(カードのID)
 
 指定されたカードの通過履歴の最新5件を返す
 
-##### POST => /api/gate/pass/master
+#### POST => /api/gate/pass/master
 
 総合ゲートを通過する際にリクエストを送る
 
-###### ボディ部
+##### ボディ部
 
 |カラム|概要|
 |:--:|:--:|
 |card|カードのid|
 |lane|レーンのIP|
 
-##### POST => /api/gate/pass/slave/(laneのIPアドレス)
+#### POST => /api/gate/pass/slave/(laneのIPアドレス)
 
 各レーンを通過する際にリクエストを送る
 
-###### ボディ部
+##### ボディ部
 
 |カラム|概要|
 |:--:|:--:|
