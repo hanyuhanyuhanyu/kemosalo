@@ -33,7 +33,6 @@ export default {
   data: () => {
     return {
       socket: null,
-      hoge: 123,
       lanes: {},
       logs: [],
       logNum: 0,

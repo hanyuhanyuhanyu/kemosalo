@@ -2,13 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import MainSignage from './MainSignage'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 const routes = [
-  {path: '/', component: App},
+  {path: '/', component: MainSignage},
+  {path: '/watchdog', component: App},
 ]
 const router = new VueRouter({
   routes
@@ -18,6 +20,7 @@ const router = new VueRouter({
 new Vue({
   router,
   el: '#app',
-  components: { App },
-  template: '<App/>'
+  router,
+  // components: { App },
+  // template: '<App/>'
 })

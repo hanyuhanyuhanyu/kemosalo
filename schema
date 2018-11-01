@@ -1,3 +1,6 @@
+drop table if exists history;
+drop table if exists lane;
+drop table if exists watched_terminal;
 CREATE TABLE history (sequental_id integer primary key autoincrement, card_id, time default current_timestamp, lane_id);
 CREATE TABLE lane (ip primary key, name, kind default 'slave');
 CREATE TABLE watched_terminal (ip primary key, name);

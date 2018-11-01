@@ -1,10 +1,6 @@
 const Lanes = require('../lib/repository/lane.js');
 const pingCmd = require('../lib/util/pingCommand.js');
 const collateFunc = require('../lib/redis/AccessController.js').collateKey;
-const idhost = require('../lib/redis/SocketIdController.js');
-const getIds = async () => {
-  return await idhost.retrieve();
-}
 const collate = async (key, val) => {
   return await collateFunc(key, val)
 }
@@ -21,8 +17,6 @@ module.exports = function(io){
         return;
       }
       pinged = true;
-      console.log(socket.id)
-      idhost.add(socket.id);
       const l = await lanes.getAll();
       l.forEach(lane => {
         setInterval(async () => {
@@ -43,37 +37,32 @@ module.exports = function(io){
         return 
       }
       console.log(ip, card)
-      const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('masterPass', ip, card))
+      io.emit('masterPass', ip, card);
     })
     socket.on('masterPassFailed', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
       console.log(ip, card)
-      const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('masterPassFailed', ip, card))
+      io.emit('masterPassFailed', ip, card);
     })
     socket.on('slavePass', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
       console.log(ip, card)
-      const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('slavePass', ip, card))
+      io.emit('slavePass', ip, card);
     })
     socket.on('slavePassFailed', async (key, val, ip, card) => {
       if(!await collate(key, val)){
         return 
       }
       console.log(ip, card)
-      const ids = await getIds()
-      ids.forEach(id => socket.to(id).emit('slavePassFailed', ip, card))
+      io.emit('slavePassFailed', ip, card);
     })
     socket.on('disconnect', () => {
       pingCmdIds.forEach(p => clearInterval(p))
       pinged = false;
-      idhost.remove(socket.id)
     })
   })
   return io
