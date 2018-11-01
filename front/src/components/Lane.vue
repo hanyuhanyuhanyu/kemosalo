@@ -1,5 +1,5 @@
 <template>
-  <div id="lane" class='lane' :class="{isError: !lane.alive}">
+  <div id="lane" class='lane' :class="{isError: lane.alive === false, isWait: lane.alive !== false && !lane.alive}">
     <div class="row">
       <div class="column">
         IPアドレス
@@ -21,7 +21,7 @@
         通信状況
       </div>
       <div class="elem">
-        {{lane.alive ? "正常" : "異常"}}
+        {{state}}
       </div>
     </div>
     <div class="row">
@@ -43,6 +43,17 @@ export default {
     lane: {
       default: new LaneStatus(),
     }
+  },
+  computed: {
+    state: function(){
+      if(this.lane.alive === true){
+        return '正常'
+      }
+      if(this.lane.alive === false){
+        return '異常'
+      }
+      return '調査中…'
+    }
   }
 }
 </script>
@@ -50,6 +61,9 @@ export default {
 <style>
   .lane{
     width: 240px;
+  }
+  .isWait{
+    background-color: #aaa;
   }
   .isError{
     background-color: #ffaaaa;
