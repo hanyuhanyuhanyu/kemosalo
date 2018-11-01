@@ -13,6 +13,7 @@ const routes = [
   {path: '/watchdog', component: App},
 ]
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
