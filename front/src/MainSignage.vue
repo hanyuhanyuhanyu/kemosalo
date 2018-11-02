@@ -32,14 +32,14 @@ export default {
   mounted: async function () {
     try{
       this.socket = io(`ws://${selfip}:3000`);
-      this.socket.on('masterPass', async (ip, card) => {
-        const history = await axios.get('/gate/history/' + card);
+      this.socket.on('masterPass', async (obj) => {
+        const history = await axios.get('/gate/history/' + obj.card);
         this.error = false;
         this.logs = [];
         history.data.forEach(d => this.logs.push(d));
         console.log(history.data);
       })
-      this.socket.on('masterPassFailed', (ip, card) => {
+      this.socket.on('masterPassFailed', (obj) => {
         this.error = true;
       })
     } catch(e) {

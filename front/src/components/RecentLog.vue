@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for='log in logs'>
+    <div v-for='log in logs' :key='log.id'>
       {{log}}
     </div>
   </div>

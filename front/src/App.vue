@@ -7,7 +7,7 @@
     <div class='laneWrapper' v-for='chunk in laneChunks()' :key='chunk.key'>
       <single-lane
         v-for='lane in chunk.arr'
-        :key='lane.ip'
+        :key='lane.id'
         :lane='lane'
       ></single-lane>
     </div>
@@ -35,15 +35,24 @@ export default {
       socket: null,
       lanes: {},
       logs: [],
+      errorLogs: [],
       logNum: 0,
     }
   },
   methods: {
-    addLog: function(ip, card, error = null){
+    addLog: function(obj){
       if(this.logs.length >= logMax){
-        this.logs.pops();
+        this.logs.pop();
+        console.log(this.logs.length)
       }
-      this.logs.unshift(new Log(this.logNum++, ip, card, error));
+      this.logs.unshift(new Log(obj));
+    },
+    addErrorLogs: function(obj){
+      if(this.errorLogs.length >= logMax){
+        this.errorLogs.pops();
+      }
+      this.errorLogs.unshift(new Log(obj))
+      console.log(this.errorLogs)
     }
   },
   mounted: async function () {
@@ -60,21 +69,21 @@ export default {
       this.socket.on('connectionLost', ip => {
         this.lanes[ip].disconnect()
       })
-      this.socket.on('masterPass', (ip, card) => {
+      this.socket.on('masterPass', (obj) => {
         console.log('masterPass')
-        this.addLog(ip, card);
+        this.addLog(obj);
       })
-      this.socket.on('masterPassFailed', (ip, card) => {
+      this.socket.on('masterPassFailed', (obj) => {
         console.log('masterPassFailed')
-        this.addLog(ip, card);
+        this.addErrorLogs(obj);
       })
-      this.socket.on('slavePass', (ip, card) => {
+      this.socket.on('slavePass', (obj) => {
         console.log('slavePass', lane)
-        this.addLog(ip, card);
+        this.addLog(obj);
       })
-      this.socket.on('slavePassFailed', (ip, card) => {
+      this.socket.on('slavePassFailed', (obj) => {
         console.log('slavePassFailed', lane)
-        this.addLog(ip, card);
+        this.addErrorLogs(obj);
       })
     } catch(e) {
       console.log('booting failed')

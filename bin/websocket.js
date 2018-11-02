@@ -36,33 +36,29 @@ module.exports = function(io){
         pingCmdIds.push(intervalId);
       })
     })
-    socket.on('masterPass', async (key, val, ip, card) => {
+    socket.on('masterPass', async (key, val, obj) => {
       if(!await collate(key, val)){
         return 
       }
-      console.log(ip, card)
-      io.emit('masterPass', ip, card);
+      io.emit('masterPass', obj);
     })
-    socket.on('masterPassFailed', async (key, val, ip, card) => {
+    socket.on('masterPassFailed', async (key, val, obj) => {
       if(!await collate(key, val)){
         return 
       }
-      console.log(ip, card)
-      io.emit('masterPassFailed', ip, card);
+      io.emit('masterPassFailed', obj);
     })
-    socket.on('slavePass', async (key, val, ip, card) => {
+    socket.on('slavePass', async (key, val, obj) => {
       if(!await collate(key, val)){
         return 
       }
-      console.log(ip, card)
-      io.emit('slavePass', ip, card);
+      io.emit('slavePass', obj);
     })
-    socket.on('slavePassFailed', async (key, val, ip, card) => {
+    socket.on('slavePassFailed', async (key, val, obj) => {
       if(!await collate(key, val)){
         return 
       }
-      console.log(ip, card)
-      io.emit('slavePassFailed', ip, card);
+      io.emit('slavePassFailed', obj);
     })
     socket.on('disconnect', () => {
       pinged--;

@@ -33,24 +33,33 @@ router.get('/all', async function(req, res, next) {
 router.get('/history/:card', async function(req, res, next) {
   try {
     const message = await passService.findByCard(req.params.card);
-    res.status(200)
-    res.send(message.object)
+    res.status(200);
+    const ret = [];
+    message.object.forEach(o => ret.push(buildResponse(o)))
+    res.send(ret)
   } catch (e){
     console.log(e)
     res.status(500);
     res.send();
   }
 });
+const buildResponse = (obj) => {
+  return {sequental_id: obj.sequental_id, ip: obj.ip, time: new Date(obj.time).toLocaleString(), name: obj.lane_name, card: obj.card_id}
+}
+const buildFailedResponse = (obj, card) => {
+  return {ip: obj.ip, time: new Date().toLocaleString(), name: obj.name || "not found", card}
+}
 router.post('/pass/master', async function(req, res, next) {
   const card = req.body.card;
   const lane = req.body.lane;
   const message = await passService.accessMaster(card, lane);
   if(message.isErr){
     res.status(message.httpCode);
-    webSocket.masterPassFailed([lane, card]);
+    const obj = await laneService.findByAddress(lane);
+    webSocket.masterPassFailed(buildFailedResponse(obj, card));
   } else {
     res.status(200);
-    webSocket.masterPass([lane, card]);
+    webSocket.masterPass(buildResponse(message.object));
   }
   res.send(message.object)
 })
@@ -61,10 +70,11 @@ router.post('/pass/slave/:lane', async function(req, res, next) {
   const message = await passService.accessSlave(card, lane);
   if(message.isErr){
     res.status(message.httpCode)
-    webSocket.slavePassFailed([lane, card])
+    const obj = await laneService.findByAddress(lane);
+    webSocket.masterPassFailed(buildFailedResponse(obj, card));
   } else {
     res.status(200)
-    webSocket.slavePass([lane, card])
+    webSocket.slavePass(buildResponse(message.object))
   }
   res.send()
 })
