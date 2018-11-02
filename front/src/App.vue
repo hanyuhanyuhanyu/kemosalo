@@ -41,9 +41,10 @@ export default {
   },
   methods: {
     addLog: function(obj){
+      console.log(this.logs.length)
+      console.log(logMax)
       if(this.logs.length >= logMax){
         this.logs.pop();
-        console.log(this.logs.length)
       }
       this.logs.unshift(new Log(obj));
     },

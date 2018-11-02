@@ -1,6 +1,6 @@
 export default class Log {
   constructor(obj){
-    this.id = obj.sequental_id || Math.floor(Math.random() * 1000000000);
+    this.id = obj.sequential_id || Math.floor(Math.random() * 1000000000);
     this.ip = obj.ip || null
     this.name = obj.name || null
     this.card = obj.card || null

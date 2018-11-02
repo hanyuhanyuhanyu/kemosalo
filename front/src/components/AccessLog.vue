@@ -32,7 +32,7 @@ export default {
         return [];
       }
       const ret = []
-      for(let i = 1; i < this.logs.length; i++){
+      for(let i = 1; i < divide; i++){
         ret.push(this.logs[i]);
       }
       return ret;
