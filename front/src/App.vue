@@ -1,5 +1,14 @@
 <template>
-  <div id="app">
+  <div>
+    <div class="basic-info">
+      <most-recent-log
+        :log='firstLog'
+      >
+      </most-recent-log>
+      <div id="accessed-num" class='log-box'>
+        通過総計:{{firstLog && firstLog.id}}
+      </div>
+    </div>
     <access-log
       :logs='logs'
     >
@@ -21,6 +30,7 @@ import LaneStatus from './assets/laneStatus.js';
 import Log from './assets/Log.js';
 
 import AccessLog from './components/AccessLog.vue';
+import MostRecentLog from './components/MostRecentLog.vue';
 import SingleLane from './components/Lane.vue';
 
 const axios = axiosBase.create({
@@ -54,7 +64,7 @@ export default {
       }
       this.errorLogs.unshift(new Log(obj))
       console.log(this.errorLogs)
-    }
+    },
   },
   mounted: async function () {
     try{
@@ -110,11 +120,16 @@ export default {
         }
         return ret
       }
+    },
+    firstLog: function(){
+      console.log(this.logs[0])
+      return this.logs[0];
     }
   },
   components: {
     'single-lane': SingleLane,
-    'access-log': AccessLog
+    'access-log': AccessLog,
+    'most-recent-log': MostRecentLog,
   }
 }
 </script>
@@ -125,12 +140,20 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+.basic-info{
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 .laneWrapper{
   display: flex;
   justify-items: center;
   align-items: center;
+}
+#accessed-num{
+  width: 25%;
+  align-items: center;
+  font-size: 1.5rem;
 }
 </style>

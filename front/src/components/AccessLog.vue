@@ -1,17 +1,31 @@
 <template>
   <div id="accessLog" class='accessLog'>
-    <first :logs="first"></first>
-    <recent :logs="recent"></recent>
-    <old :logs="old"></old>
+    <div class='each-log log-box' v-for='log in logs' :key='log.id'>
+      <div class="data-box">
+        <div class="columns">
+          <div class="column">Card</div>
+          <div class="column">Time</div>
+        </div>
+        <div class="rows">
+          <div class="row">{{log.card}}</div>
+          <div class="row">{{log.time.split(' ')[1]}}</div>
+        </div>
+      </div>
+      <div class="data-box">
+        <div class="columns">
+          <div class="column">Gate</div>
+          <div class="column">IP</div>
+        </div>
+        <div class="rows">
+          <div class="row">{{log.name}}</div>
+          <div class="row">{{log.ip}}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-const divide = 4
-
-import MostRecentLog from './MostRecentLog.vue';
-import RecentLog from './RecentLog.vue';
-import OldLog from './OldLog.vue';
 
 export default {
   props: {
@@ -19,60 +33,25 @@ export default {
       default: [],
     }
   },
-  computed:{
-    first: function(){
-      if(!this.logs){
-        return null;
-      }
-      console.log(this.logs)
-      return this.logs[0];
-    },
-    recent: function(){
-      if(!this.logs){
-        return [];
-      }
-      const ret = []
-      for(let i = 1; i < divide; i++){
-        ret.push(this.logs[i]);
-      }
-      return ret;
-    },
-    old: function(){
-      if(!this.logs){
-        return [];
-      }
-      const ret = []
-      for(let i = divide; i < this.logs.length; i++){
-        ret.push(this.logs[i]);
-      }
-      return ret;
-    }
-  },
   components: {
-    'first': MostRecentLog,
-    'recent': RecentLog,
-    'old': OldLog,
   }
 }
 </script>
 
 <style>
-  .lane{
-    width: 240px;
-  }
-  .isError{
-    background-color: #ffaaaa;
-  }
-  .row{
-    display:flex;
-    width: 100%;
-  }
-  .column{
-    width: 50%;
-  }
-  .elem{
-    width: 50%;
-  }
+#accessLog{
+  width: 30%;
+}
+.each-log{
+  font-size: 1.5rem;
+}
+.data-box{
+  display: flex;
+  width: 50%;
+}
+.columns {
+  width: 30%;
+}
 </style>
 
 
