@@ -1,26 +1,25 @@
 const Lanes = require('../lib/repository/lane.js');
 const pingCmd = require('../lib/util/pingCommand.js');
 const collateFunc = require('../lib/redis/AccessController.js').collateKey;
+const pingManager = require('../lib/redis/PingManager.js');
 const collate = async (key, val) => {
   return await collateFunc(key, val)
 }
 const pingRoom = 'pingRoom'
 
-let pingCmdIds = [];
-let pinged = 0;
+let pingCmdIds = null;
+// let pinged = 0;
 
 module.exports = function(io){
-  io.on('connection', function(socket){
+  io.on('connection', async function(socket){
     let lanes = new Lanes();
     console.log('user connected');
     socket.on('initialize', async () => {
       socket.join(pingRoom);
-      if(pinged > 0){
-        console.log('pinged twice')
+      if(await pingManager.doing()){
+        console.log('skip fire ping command')
         return;
       }
-      console.log(pinged)
-      pinged++;
       const l = await lanes.getAll();
       l.forEach(lane => {
         const intervalId = setInterval(async () => {
@@ -34,7 +33,8 @@ module.exports = function(io){
             io.to(pingRoom).emit('connectionLost', lane.ip)
           }
         }, 5000)
-        pingCmdIds.push(intervalId);
+        pingManager.startPing();
+        pingCmdIds = intervalId
       })
     })
     socket.on('masterPass', async (key, val, obj) => {
@@ -62,10 +62,8 @@ module.exports = function(io){
       io.emit('slavePassFailed', obj);
     })
     socket.on('disconnect', () => {
-      pinged--;
-      if(pinged === 0){
-        pingCmdIds.forEach(p => clearInterval(p))
-      }
+      const p = pingManager.finishPing()
+      clearInterval(pingCmdIds);
     })
   })
   return io
