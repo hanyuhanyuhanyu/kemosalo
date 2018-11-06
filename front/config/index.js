@@ -15,6 +15,10 @@ module.exports = {
         target: 'http://localhost:3000/',
         changeOrigin: true,
       },
+      '/images': {
+        target: 'http://localhost:3000/',
+        changeOrigin: true,
+      },
       '/socket.io': {
         target: 'http://localhost:3000/',
         changeOrigin: true,

@@ -1,6 +1,7 @@
 /node_modules
 /public/static/js
 /public/static/css
+/public/images
 history.sqlite3
 /memo
 /sensitive_sh_script

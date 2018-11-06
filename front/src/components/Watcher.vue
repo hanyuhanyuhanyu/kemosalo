@@ -3,6 +3,7 @@
     <div id="master" class='log-box h-4 w-12'>
       <div class="over log-box">master</div>
       <div class="image">
+        <img src='/images/glados.png' width='100' height='117'>
       </div>
       <div class="infos">
         <div v-for='info in masterInfos' :key='info.key' class='info'>
@@ -13,6 +14,7 @@
     <div id="slaves" class='log-box h-8 w-12'>
       <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane">
         <div class="slave-image">
+          <img src='/images/turret.png' width='60' height='130'>
         </div>
         <div class="slave-infos">
           <div class='slave-info'>
