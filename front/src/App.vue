@@ -24,9 +24,9 @@
           :lanes='slaveLanes'
           class='watcher log-box w-12 h-8'
         ></watcher>
-        <footer
+        <foot
           class='footer log-box w-12 h-2'
-        ></footer>
+        ></foot>
       </div>
     </div>
     <div class='laneWrapper' v-for='chunk in laneChunks()' :key='chunk.key'>
@@ -158,7 +158,7 @@ export default {
     'most-recent-log': MostRecentLog,
     'operations': Operations,
     'watcher': Watcher,
-    'footer': Footer,
+    'foot': Footer,
   }
 }
 </script>

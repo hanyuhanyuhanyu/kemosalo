@@ -11,7 +11,25 @@
       </div>
     </div>
     <div id="slaves" class='log-box h-8 w-12'>
-      {{master}}
+      <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane">
+        <div class="slave-image">
+        </div>
+        <div class="slave-infos">
+          <div class='slave-info'>
+            死活:{{lane.alive}}
+          </div>
+          <div class='slave-info'>
+            名前:{{lane.name}}
+          </div>
+          <div class='slave-info'>
+            IP:{{lane.ip}}
+          </div>
+          <div class='slave-info'>
+            時間:{{lane.time}}
+          </div>
+        </div>
+      </div>
+      <div class="over log-box slave-title">slave</div>
     </div>
   </div>
 </template>
@@ -36,6 +54,9 @@ export default {
   },
   computed: {
     masterInfos: function () {
+      if(!this.master){
+        return [] 
+      }
       const ret = []
       infos.forEach(i => {
         let obj = {}
@@ -86,5 +107,35 @@ export default {
 .info{
   width: 40%;
   height: 20%;
+}
+#slaves{
+  display: flex;
+  flex-wrap: wrap;
+}
+.each-lane{
+  margin: 0.5rem 0 0 0.5rem;
+  padding: 0;
+  width: calc(20% - 0.6rem);
+  height: calc(50% - 0.75rem);
+}
+.slave-title{
+  margin-top: 0;
+  margin-left: 0;
+}
+.slave-image{
+  width: 35%;
+}
+.slave-infos{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+.slave-info{
+  margin: 0;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  text-align: left;
 }
 </style>
