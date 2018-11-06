@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class='wrapper'>
     <div class="basic-info">
       <most-recent-log
         :log='firstLog'
+        class='most-recent w-8 h-12'
       >
       </most-recent-log>
-      <div id="accessed-num" class='log-box'>
+      <div id="accessed-num" class='log-box w-4 h-12'>
         通過総計:{{firstLog && firstLog.id}}
       </div>
     </div>
@@ -145,6 +146,8 @@ export default {
   display: flex;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 10%;
 }
 .laneWrapper{
   display: flex;
@@ -155,5 +158,13 @@ export default {
   width: 25%;
   align-items: center;
   font-size: 1.5rem;
+}
+.most-recent{
+  font-size: 2rem;
+}
+.wrapper{
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 </style>

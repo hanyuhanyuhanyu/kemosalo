@@ -51,13 +51,6 @@ export default {
 }
 </script>
 
-<style>
-#main{
-  width: 70%;
-  height: 4rem;
-  font-size: 2rem;
-}
-</style>
 
 
 
