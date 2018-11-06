@@ -19,6 +19,7 @@ module.exports = function(io){
         console.log('pinged twice')
         return;
       }
+      console.log(pinged)
       pinged++;
       const l = await lanes.getAll();
       l.forEach(lane => {

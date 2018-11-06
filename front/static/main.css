@@ -27,19 +27,36 @@ body{
 .log-box{
   display: flex;
   margin: 1rem 1.5rem;
-  padding-left: 0.5rem;
   border: solid 2.2px #8e6429;
   text-align: start;
-  align-items: center;
+  box-sizing: border-box; 
 }
-.w-8{
-  width: calc(66.6667% - 3rem);
+.padding{
+  padding-left: 0.5rem;
 }
 .w-4{
   width: calc(33.3333% - 3rem);
 }
+.w-8{
+  width: calc(66.6666% - 3rem);
+}
+.w-12{
+  width: calc(100% - 3rem);
+}
+.h-1{
+  height: calc(8.3333% - 2rem);
+}
 .h-2{
-  height: calc(16.6667% - 2rem);
+  height: calc(16.6666% - 2rem);
+}
+.h-4{
+  height: calc(33.3333% - 2rem);
+}
+.h-8{
+  height: calc(66.6666% - 2rem);
+}
+.h-9{
+  height: calc(75% - 2rem);
 }
 .h-12{
   height: calc(100% - 2rem);

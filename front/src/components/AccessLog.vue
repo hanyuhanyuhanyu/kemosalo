@@ -44,9 +44,6 @@ export default {
 /* .logs-move{ */
 /*   transition: transform 0.3s; */
 /* } */
-#accessLog{
-  width: 30%;
-}
 .each-log{
   font-size: 1.5rem;
   transition: all 0.3s;

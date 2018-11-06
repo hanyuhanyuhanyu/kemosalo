@@ -3,17 +3,32 @@
     <div class="basic-info">
       <most-recent-log
         :log='firstLog'
-        class='most-recent w-8 h-12'
+        class='most-recent w-8 h-12 padding'
       >
       </most-recent-log>
-      <div id="accessed-num" class='log-box w-4 h-12'>
+      <div id="accessed-num" class='padding log-box w-4 h-12'>
         通過総計:{{firstLog && firstLog.id}}
       </div>
     </div>
-    <access-log
-      :logs='logs'
-    >
-    </access-log>
+    <div class="others">
+      <access-log
+        :logs='logs'
+        class='access-log w-4'
+      ></access-log>
+      <div class="informations">
+        <operations 
+          class='operations log-box w-12 h-2'
+        ></operations>
+        <watcher
+          :master='masterLane'
+          :lanes='slaveLanes'
+          class='watcher log-box w-12 h-8'
+        ></watcher>
+        <footer
+          class='footer log-box w-12 h-2'
+        ></footer>
+      </div>
+    </div>
     <div class='laneWrapper' v-for='chunk in laneChunks()' :key='chunk.key'>
       <single-lane
         v-for='lane in chunk.arr'
@@ -33,6 +48,10 @@ import Log from './assets/Log.js';
 import AccessLog from './components/AccessLog.vue';
 import MostRecentLog from './components/MostRecentLog.vue';
 import SingleLane from './components/Lane.vue';
+import Operations from './components/Operations.vue';
+import Watcher from './components/Watcher.vue';
+import Footer from './components/Footer.vue';
+
 
 const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
@@ -125,12 +144,21 @@ export default {
     firstLog: function(){
       console.log(this.logs[0])
       return this.logs[0];
+    },
+    masterLane: function() {
+      return Object.values(this.lanes).filter(l => l.kind === 'master')[0]
+    },
+    slaveLanes: function() {
+      return Object.values(this.lanes).filter(l => l.kind !== 'master')
     }
   },
   components: {
     'single-lane': SingleLane,
     'access-log': AccessLog,
     'most-recent-log': MostRecentLog,
+    'operations': Operations,
+    'watcher': Watcher,
+    'footer': Footer,
   }
 }
 </script>
@@ -149,6 +177,13 @@ export default {
   width: 100%;
   height: 10%;
 }
+.others{
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 90%;
+}
 .laneWrapper{
   display: flex;
   justify-items: center;
@@ -166,5 +201,18 @@ export default {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+.informations{
+  width: 66.6666%;
+  height: 100%;
+}
+.operations{
+
+}
+.watcher{
+
+}
+.footer{
+
 }
 </style>
