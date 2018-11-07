@@ -3,17 +3,19 @@
     <div class="basic-info">
       <most-recent-log
         :log='firstLog'
-        class='most-recent w-8 h-12 padding'
+        class='most-recent h-12 padding'
       >
       </most-recent-log>
-      <div id="accessed-num" class='padding log-box w-4 h-12'>
-        通過総計:{{firstLog && firstLog.id}}
+      <div class="accessed-num-wrapper">
+        <div id="accessed-num" class='padding log-box w-12 h-12'>
+          通過総計:{{firstLog && firstLog.id}}
+        </div>
       </div>
     </div>
     <div class="others">
       <access-log
         :logs='logs'
-        class='access-log w-4'
+        class='access-log'
       ></access-log>
       <div class="informations">
         <operations 
@@ -29,13 +31,6 @@
         ></foot>
       </div>
     </div>
-    <div class='laneWrapper' v-for='chunk in laneChunks()' :key='chunk.key'>
-      <single-lane
-        v-for='lane in chunk.arr'
-        :key='lane.id'
-        :lane='lane'
-      ></single-lane>
-    </div>
   </div>
 </template>
 
@@ -47,7 +42,6 @@ import Log from './assets/Log.js';
 
 import AccessLog from './components/AccessLog.vue';
 import MostRecentLog from './components/MostRecentLog.vue';
-import SingleLane from './components/Lane.vue';
 import Operations from './components/Operations.vue';
 import Watcher from './components/Watcher.vue';
 import Footer from './components/Footer.vue';
@@ -153,7 +147,6 @@ export default {
     }
   },
   components: {
-    'single-lane': SingleLane,
     'access-log': AccessLog,
     'most-recent-log': MostRecentLog,
     'operations': Operations,
@@ -190,11 +183,14 @@ export default {
   align-items: center;
 }
 #accessed-num{
-  width: 25%;
   align-items: center;
   font-size: 1.5rem;
 }
+.accessed-num-wrapper{
+  width: 33.3333%;
+}
 .most-recent{
+  width: 66.6666%;
   font-size: 2rem;
 }
 .wrapper{
@@ -202,15 +198,20 @@ export default {
   margin: 0;
   padding: 0;
 }
+.access-log{
+  width: 33.3333%
+}
 .informations{
   width: 66.6666%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .operations{
 
 }
 .watcher{
-
+  flex-grow: 1;
 }
 .footer{
 

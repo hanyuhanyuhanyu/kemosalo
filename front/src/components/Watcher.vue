@@ -115,10 +115,13 @@ export default {
   flex-wrap: wrap;
 }
 .each-lane{
-  margin: 0.5rem 0 0 0.5rem;
+  margin: 0.5rem 0.5rem;
+  /* margin: 0.5rem 0 0 0.5rem; */
   padding: 0;
-  width: calc(20% - 0.6rem);
-  height: calc(50% - 0.75rem);
+  /* width: calc(20% - 0.6rem); */
+  height: calc(50% - 1rem);
+  flex-shrink: 1;
+  flex-basis: calc(20% - 1rem);
 }
 .slave-title{
   margin-top: 0;

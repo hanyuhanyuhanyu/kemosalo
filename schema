@@ -18,4 +18,3 @@ insert into lane (ip, name, kind) values ('192.168.20.67','lane7', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.68','lane8', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.69','lane9', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.70','lane10', 'slave');
-insert into lane (ip, name, kind) values ('127.0.0.1','forTest', 'slave');

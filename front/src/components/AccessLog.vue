@@ -1,28 +1,28 @@
 <template>
   <div id="accessLog" class='accessLog'>
-    <transition-group name='logs'>
-        <div class='each-log log-box logs-item' v-for='log in logs' :key='log.id'>
-          <div class="data-box">
-            <div class="columns">
-              <div class="column">Card</div>
-              <div class="column">Time</div>
-            </div>
-            <div class="rows">
-              <div class="row">{{log.card}}</div>
-              <div class="row">{{log.time.split(' ')[1]}}</div>
-            </div>
+    <transition-group name='logs' id='trans' tag='div'>
+      <div class='each-log log-box' v-for='log in logs' :key='log.id'>
+        <div class="data-box">
+          <div class="columns">
+            <div class="column">Card</div>
+            <div class="column">Time</div>
           </div>
-          <div class="data-box">
-            <div class="columns">
-              <div class="column">Gate</div>
-              <div class="column">IP</div>
-            </div>
-            <div class="rows">
-              <div class="row">{{log.name}}</div>
-              <div class="row">{{log.ip}}</div>
-            </div>
+          <div class="rows">
+            <div class="row">{{log.card}}</div>
+            <div class="row">{{log.time.split(' ')[1]}}</div>
           </div>
         </div>
+        <div class="data-box">
+          <div class="columns">
+            <div class="column">Gate</div>
+            <div class="column">IP</div>
+          </div>
+          <div class="rows">
+            <div class="row">{{log.name}}</div>
+            <div class="row">{{log.ip}}</div>
+          </div>
+        </div>
+      </div>
     </transition-group>
   </div>
 </template>
@@ -44,9 +44,17 @@ export default {
 /* .logs-move{ */
 /*   transition: transform 0.3s; */
 /* } */
+#accessLog{
+  display: flex;
+  flex-direction: column;
+}
 .each-log{
   font-size: 1.5rem;
+  height: calc(10% - 1.1rem);
+  box-sizing: border-box;
   transition: all 0.3s;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 .logs-enter{
   transform: translateX(-100%);
@@ -60,6 +68,9 @@ export default {
 }
 .columns {
   width: 30%;
+}
+#trans: {
+  height: 100%;
 }
 </style>
 
