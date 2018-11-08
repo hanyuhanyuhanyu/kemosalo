@@ -82,11 +82,13 @@ export default {
   flex-direction: column;
 }
 .over{
-  margin: 0.5rem 0.7rem;
+  margin: 0 0.7rem 0.5rem 0;
   padding: 0 1rem;
   position: absolute;
   font-size: 1.5rem;
   z-index: 1;
+  border-top: none;
+  border-left: none;
 }
 .image{
   height: 100%;
@@ -116,9 +118,7 @@ export default {
 }
 .each-lane{
   margin: 0.5rem 0.5rem;
-  /* margin: 0.5rem 0 0 0.5rem; */
   padding: 0;
-  /* width: calc(20% - 0.6rem); */
   height: calc(50% - 1rem);
   flex-shrink: 1;
   flex-basis: calc(20% - 1rem);
