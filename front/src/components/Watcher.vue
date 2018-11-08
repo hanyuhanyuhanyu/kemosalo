@@ -1,6 +1,6 @@
 <template>
   <div id='main'>
-    <div id="master" class='log-box h-4 w-12'>
+    <div id="master" class='log-box h-4 w-12' :class='{warn: !master.alive}'>
       <div class="over log-box">master</div>
       <div class="image">
         <img src='/images/glados.png' width='100' height='117'>
@@ -12,13 +12,13 @@
       </div>
     </div>
     <div id="slaves" class='log-box h-8 w-12'>
-      <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane">
+      <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane" :class='{warn: !lane.alive}'>
         <div class="slave-image">
           <img src='/images/turret.png' width='60' height='130'>
         </div>
         <div class="slave-infos">
           <div class='slave-info'>
-            死活:{{lane.alive}}
+            死活:{{lane.connectionStatus()}}
           </div>
           <div class='slave-info'>
             名前:{{lane.name}}
@@ -27,7 +27,7 @@
             IP:{{lane.ip}}
           </div>
           <div class='slave-info'>
-            時間:{{lane.time}}
+            応答:{{lane.timems()}}
           </div>
         </div>
       </div>
@@ -37,12 +37,12 @@
 </template>
 
 <script>
-const infos = ['alive', 'ip', 'name', 'time']
+const infos = ['connectionStatus', 'ip', 'name', 'timems']
 const jpInfos = {
-  alive: '死活',
+  connectionStatus: '死活',
   name: 'ゲート名',
   ip: 'IP',
-  time: 'レスポンス',
+  timems: '応答',
 }
 
 export default {
@@ -63,7 +63,7 @@ export default {
       infos.forEach(i => {
         let obj = {}
         obj.key = jpInfos[i]
-        obj.value = this.master[i]
+        obj.value = typeof this.master[i] === "function" ? this.master[i]() : this.master[i]
         ret.push(obj)
       })
       return ret;
@@ -129,6 +129,18 @@ export default {
 }
 .slave-image{
   width: 35%;
+}
+.warn{
+  animation-name: warn-anime;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes warn-anime{
+  100%{
+    background-color: #c63535;
+    color: #f4b864;
+  }
 }
 .slave-infos{
   display: flex;

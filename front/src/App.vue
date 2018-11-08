@@ -3,6 +3,7 @@
     <div class="basic-info">
       <most-recent-log
         :log='firstLog'
+        :cursorOn='cursorOn'
         class='most-recent h-12 padding'
       >
       </most-recent-log>
@@ -18,17 +19,19 @@
         class='access-log'
       ></access-log>
       <div class="informations">
-        <operations 
-          class='operations log-box w-12 h-2'
-        ></operations>
+        <notification
+          class='notification padding log-box w-12'
+          :log='notification'
+          :cursorOn='cursorOn'
+        ></notification>
         <watcher
           :master='masterLane'
           :lanes='slaveLanes'
           class='watcher log-box w-12 h-8'
         ></watcher>
-        <foot
-          class='footer log-box w-12 h-2'
-        ></foot>
+        <operations 
+          class='operations log-box w-12'
+        ></operations>
       </div>
     </div>
   </div>
@@ -42,7 +45,7 @@ import Log from './assets/Log.js';
 
 import AccessLog from './components/AccessLog.vue';
 import MostRecentLog from './components/MostRecentLog.vue';
-import Operations from './components/Operations.vue';
+import Notification from './components/Notification.vue';
 import Watcher from './components/Watcher.vue';
 import Footer from './components/Footer.vue';
 
@@ -52,6 +55,7 @@ const axios = axiosBase.create({
 });
 
 const logMax = 10;
+const noMatter = "現在異常なリクエストは検知していません……"
 export default {
   name: 'App',
   data: () => {
@@ -59,8 +63,10 @@ export default {
       socket: null,
       lanes: {},
       logs: [],
+      notification: noMatter,
       errorLogs: [],
       logNum: 0,
+      cursorOn: false,
     }
   },
   methods: {
@@ -81,6 +87,9 @@ export default {
     },
   },
   mounted: async function () {
+    setInterval(() => {
+      this.cursorOn = !this.cursorOn
+    }, 600)
     try{
       const ips = await axios.get('/gate/all')
       ips.data.forEach(l => {
@@ -149,7 +158,7 @@ export default {
   components: {
     'access-log': AccessLog,
     'most-recent-log': MostRecentLog,
-    'operations': Operations,
+    'notification': Notification,
     'watcher': Watcher,
     'foot': Footer,
   }
@@ -193,6 +202,15 @@ export default {
   width: 66.6666%;
   font-size: 2rem;
 }
+.notification{
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  height: calc(12% - 2rem);
+}
+.operations{
+  height: calc(21.3333% - 2rem);
+}
 .wrapper{
   height: 100%;
   margin: 0;
@@ -207,13 +225,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.operations{
-
-}
 .watcher{
   flex-grow: 1;
-}
-.footer{
-
 }
 </style>

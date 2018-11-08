@@ -27,6 +27,16 @@ body{
   width: calc(100% - 6rem);
   border: solid 2.2px #8e6429;
 }
+#kemosalo-logo{
+  position: absolute;
+  top: 0 ;
+  left:0;
+  right:0;
+  bottom:0;
+  margin: auto;
+  z-index:-1;
+  width: 70%;
+}
 .log-box{
   display: flex;
   margin: 1rem 1.5rem;
@@ -54,6 +64,9 @@ body{
 }
 .h-2{
   height: calc(16.6666% - 2rem);
+}
+.h-3{
+  height: calc(25% - 2rem);
 }
 .h-4{
   height: calc(33.3333% - 2rem);

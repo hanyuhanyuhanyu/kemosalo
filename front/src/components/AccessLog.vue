@@ -1,6 +1,6 @@
 <template>
   <div id="accessLog" class='accessLog'>
-    <transition-group name='logs' id='trans' tag='div'>
+    <transition-group name='logs' id='trans' tag='span'>
       <div class='each-log log-box' v-for='log in logs' :key='log.id'>
         <div class="data-box">
           <div class="columns">
@@ -47,6 +47,10 @@ export default {
 #accessLog{
   display: flex;
   flex-direction: column;
+}
+#accessLog>span{
+  height: 100%;
+  display: block;
 }
 .each-log{
   font-size: 1.5rem;

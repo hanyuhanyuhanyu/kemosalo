@@ -6,6 +6,15 @@ export default class LaneStatus {
     this.alive = undefined
     this.time = null
   }
+  connectionStatus(){
+    return this.alive ? "正常" : "異常"
+  }
+  timems(){
+    if(!this.time){
+      return '----'
+    }
+    return this.time + ' ms'
+  }
   access(time){
     this.alive = true
     this.time = time

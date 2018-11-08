@@ -22,11 +22,6 @@ export default {
       outing: false,
     }
   },
-  methods: {
-    toLog: function(obj){
-      return `${obj.card}が${obj.time.split(' ')[1]}に${obj.name}(IP:${obj.ip})を通過しました`
-    }
-  },
   mounted: function () {
     setInterval(() => {
       if(this.buffer.length > 0){
@@ -40,6 +35,7 @@ export default {
         this.outing = false;
       }
     }, 15)
+    this.buffer = this.log
   },
   computed:{
     cursor: function(){
@@ -49,7 +45,7 @@ export default {
   watch: {
     log: function (val){
       this.logOut = "";
-      this.buffer = this.toLog(val);
+      this.buffer = val
     }
   }
 }
