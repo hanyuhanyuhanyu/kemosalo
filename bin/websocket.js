@@ -21,8 +21,9 @@ module.exports = function(io){
         return;
       }
       const l = await lanes.getAll();
-      l.forEach(lane => {
-        const intervalId = setInterval(async () => {
+
+      const intervalId = setInterval(async () => {
+        l.forEach(async lane => {
           try{
             console.log(`send ping to ${lane.ip}`)
             const ret = await pingCmd(lane.ip)
@@ -32,10 +33,10 @@ module.exports = function(io){
           } catch(e) {
             io.to(pingRoom).emit('connectionLost', lane.ip)
           }
-        }, 5000)
-        pingManager.startPing();
-        pingCmdIds = intervalId
-      })
+        })
+      }, 5000)
+      pingManager.startPing();
+      pingCmdIds = intervalId
     })
     socket.on('masterPass', async (key, val, obj) => {
       if(!await collate(key, val)){

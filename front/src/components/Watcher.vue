@@ -1,6 +1,6 @@
 <template>
   <div id='main'>
-    <div id="master" class='log-box h-4 w-12' :class='{warn: !master.alive}'>
+    <div id="master" class='log-box h-4 w-12' :class='{warn: master.alive === false}'>
       <div class="over log-box">master</div>
       <div class="image">
         <img src='/images/glados.png' width='100' height='117'>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div id="slaves" class='log-box h-8 w-12'>
-      <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane" :class='{warn: !lane.alive}'>
+      <div v-for='lane in lanes' :key='lane.id' class="log-box each-lane" :class='{warn: lane.alive === false}'>
         <div class="slave-image">
           <img src='/images/turret.png' width='60' height='130'>
         </div>

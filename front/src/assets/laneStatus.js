@@ -7,7 +7,15 @@ export default class LaneStatus {
     this.time = null
   }
   connectionStatus(){
-    return this.alive ? "正常" : "異常"
+    let ret = "正常"
+    switch(this.alive){
+      case true:
+        return '正常'
+      case false:
+        return '異常'
+      case undefined:
+        return '調査中…'
+    }
   }
   timems(){
     if(!this.time){
