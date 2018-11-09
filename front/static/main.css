@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 html{
   height: 100%;
   color: #cb964d;
@@ -60,6 +65,9 @@ body{
 }
 .w-8{
   width: calc(66.6666% - 3rem);
+}
+.w-10{
+  width: calc(83.3333% - 3rem);
 }
 .w-12{
   width: calc(100% - 3rem);

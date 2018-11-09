@@ -96,7 +96,7 @@ export default {
         this.$set(this.lanes, l.ip, new LaneStatus(l.ip, l.name, l.kind))
       })
       this.socket = io(`ws://${selfip}:3000`);
-      this.socket.emit('initialize');
+      this.socket.emit('watchdogInitialize');
       this.socket.on('connectionAscertained', (ip, time) => {
         this.lanes[ip].access(time)
       })

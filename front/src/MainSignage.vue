@@ -32,6 +32,7 @@ export default {
   mounted: async function () {
     try{
       this.socket = io(`ws://${selfip}:3000`);
+      this.socket.emit('mainSignnageInitialize')
       this.socket.on('masterPass', async (obj) => {
         const history = await axios.get('/gate/history/' + obj.card);
         this.error = false;

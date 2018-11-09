@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import MainSignage from './MainSignage'
+import CardReader from './CardReader'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -11,6 +12,7 @@ Vue.config.productionTip = false
 const routes = [
   {path: '/', component: MainSignage},
   {path: '/watchdog', component: App},
+  {path: '/cardreader', component: CardReader},
 ]
 const router = new VueRouter({
   mode: 'history',

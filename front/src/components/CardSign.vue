@@ -1,14 +1,14 @@
 <template>
-  <div id='main' class='log-box style'>
-    {{logOut}}{{cursor}}
+  <div class=''>
+    {{cardOut}}{{cursor}}
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    log: {
-      default: ""
+  props:{
+    card: {
+      default: undefined
     },
     cursorOn: {
       default: false
@@ -16,25 +16,19 @@ export default {
   },
   data: () => {
     return {
-      buffer: "",
-      exceeded: [],
-      logOut: "",
+      cardOut: "",
+      buffer: "カードを読み込んでください",
       outing: false,
-    }
-  },
-  methods: {
-    toLog: function(obj){
-      return `${obj.card}が${obj.time.split(' ')[1]}に${obj.name}(IP:${obj.ip})を通過しました`
     }
   },
   mounted: function () {
     setInterval(() => {
       if(this.buffer.length > 0){
         if(!this.outing){
-          this.logOut = '';
+          this.cardOut = '';
         }
         this.outing = true
-        this.logOut += this.buffer[0]
+        this.cardOut += this.buffer[0]
         this.buffer = this.buffer.slice(1)
       } else {
         this.outing = false;
@@ -42,21 +36,21 @@ export default {
     }, 15)
   },
   computed:{
+    cardName: function(){
+      return this.card ? `読取成功: ${this.card}の履歴は以下の通りです` : "カードを読み込んでください"
+    },
     cursor: function(){
       return this.cursorOn ? "_" : " ";
     }
   },
   watch: {
-    log: function (val){
-      this.logOut = "";
-      this.buffer = this.toLog(val);
+    card: function (val){
+      this.cardOut = "";
+      this.buffer = `読取成功: ${val}の履歴は以下の通りです` 
     }
-  }
+  } 
 }
 </script>
+
 <style>
-.style{
-  display: flex;
-  justify-content: center;
-}
 </style>
