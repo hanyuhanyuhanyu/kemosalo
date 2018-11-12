@@ -8,6 +8,7 @@ var history = require('connect-history-api-fallback');
 var indexRouter = require('./routes/index');
 var gateRouter = require('./routes/gate');
 var cardRouter = require('./routes/card');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/gate', gateRouter)
 app.use('/api/card', cardRouter)
+app.use('/api/user', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

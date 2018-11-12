@@ -3,9 +3,11 @@ drop table if exists lane;
 drop table if exists watched_terminal;
 CREATE TABLE history (sequential_id integer primary key autoincrement, card_id, time default current_timestamp, lane_id);
 CREATE TABLE lane (ip text primary key, name, kind default 'slave');
+create TABLE user (id integer primary key autoincrement, card_id unique, name);
 
 create index cardIndex on history(card_id);
 create index ipIndex on lane(ip);
+create index userCardIndex on user(card_id);
 
 insert into lane (ip, name, kind) values ('192.168.20.60','gate', 'master');
 insert into lane (ip, name, kind) values ('192.168.20.61','lane1', 'slave');

@@ -12,6 +12,8 @@ const cardReader = 'cardReader'
 let pingCmdIds = null;
 // let pinged = 0;
 
+const makeRegisterRoomKey = id => `kemosalo.websocket.register.room.${id}`
+
 module.exports = function(io){
   io.on('connection', async function(socket){
     let lanes = new Lanes();
@@ -40,6 +42,9 @@ module.exports = function(io){
       }, 5000)
       pingManager.startPing();
       pingCmdIds = intervalId
+    })
+    socket.on('registerInitialize', async (id) => {
+      socket.join(makeRegisterRoomKey(id))
     })
     socket.on('mainSignageInitialize', () => {
       socket.join(watchdog)
@@ -80,6 +85,13 @@ module.exports = function(io){
     socket.on('disconnect', () => {
       const p = pingManager.finishPing()
       clearInterval(pingCmdIds);
+    })
+    socket.on('readBlankCard', async (key, val, obj) => {
+      if(!await collate(key, val)){
+        return
+      }
+      io.to(makeRegisterRoomKey(obj.id)).emit('blankCardRead', obj)
+
     })
   })
   return io

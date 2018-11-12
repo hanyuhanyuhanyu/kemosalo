@@ -36,6 +36,7 @@ body{
   width: calc(100% - 6rem);
   border: solid 2.2px #8e6429;
   box-sizing: border-box; 
+  z-index: 5;
 }
 #kemosalo-logo{
   position: absolute;
