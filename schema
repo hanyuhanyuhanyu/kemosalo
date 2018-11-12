@@ -20,3 +20,5 @@ insert into lane (ip, name, kind) values ('192.168.20.67','lane7', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.68','lane8', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.69','lane9', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.70','lane10', 'slave');
+
+insert into user (card_id, name) values ('testCard','tester');

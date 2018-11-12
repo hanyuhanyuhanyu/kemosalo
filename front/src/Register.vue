@@ -34,7 +34,7 @@ export default {
       axios.post('/user/register', params).then(res => 0).catch(error => 0)
     }
   },
-  mounted: async function () {
+  mounted: function () {
     try{
       this.socket = io(`ws://${selfip}:3000`);
       this.socket.emit('registerInitialize', this.$route.params.id);

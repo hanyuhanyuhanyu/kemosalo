@@ -5,6 +5,8 @@ import App from './App'
 import MainSignage from './MainSignage'
 import CardReader from './CardReader'
 import Register from './Register'
+import Users from './Users'
+import User from './User'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -15,6 +17,8 @@ const routes = [
   {path: '/register/:id', component: Register},
   {path: '/watchdog', component: App},
   {path: '/cardreader', component: CardReader},
+  {path: '/user', component: Users},
+  {path: '/user/:id', component: User},
 ]
 const router = new VueRouter({
   mode: 'history',
