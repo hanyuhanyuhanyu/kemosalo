@@ -4,13 +4,11 @@
       <span v-if='error'>
         error!
       </span>
-      <div v-if='logs[0]' style='height:100%;'>
-        <div class="user-name">
+      <div style='height:100%; position: relative;'>
+        <div v-if='logs[0]' class="user-name" :style='{fontSize: determineFontSize(userName) + "rem"}'>
           {{userName}}<br><div style='font-size: 2rem;'>さん</div>
         </div>
-      </div>
-      <div v-else style='display: flex; place-content: center center; align-self: center; height: 100%;'>
-        <div class="image-wrapper">
+        <div :class='{"image-wrapper-animation": !logs[0]}' class='image-wrapper'>
           <img src='/images/companion_cube.png' class='cube-tan'>
         </div>
       </div>
@@ -21,21 +19,35 @@
           {{logs[0] ? '通過履歴' : 'カード読み取りを待っています'}}
         </div>
       </div>
-      <div v-if='logs[0]' class="log-box w-12 each-logs" style='height: 40%;'>
-        <div class='title log-box' style='font-size: 1.5rem; width: 45%; padding-bottom: 0.5rem'>直近の通過ゲート</div>
-        <div class="time-view"> {{logs[0].name}} </div>
-        <div class='timer'>{{logs[0].time.split(" ")[1]}}</div>
-      </div>
-      <div  v-if='logs[0]' class='rests log-box w-10'>
-        <div class='title log-box' style='font-size: 1.5rem; width: 45%; padding-bottom: 0.5rem'>それ以前…</div>
-        <div
-          v-for='(history, ind) in initLogs'
-          :key='history.sequential_id'
-          class='log-box each-history w-12'
-          :data-ind='ind'>
-          <div class="time-view" style='font-size: 2.5rem; vertical-align: middle;'> {{history.name}} </div>
-          <div class='timer' style='font-size: 1.5rem;'>{{history.time.split(" ")[1]}}</div>
+      <transition name='first-history'>
+        <div v-if='logs[0]' class="log-box w-12 each-logs" style='height: 40%;'>
+          <div class='title log-box' style='font-size: 2.5rem; width: 45%;'>直近</div>
+          <div class="time-view"> {{logs[0].name}} </div>
+          <div class='timer'>{{logs[0].time.split(" ")[1]}}</div>
         </div>
+      </transition>
+      <div class='w-10' :class='{"log-box": !!logs[0]}' style='display: flex; flex-direction: column;'>
+        <div v-if='logs[0]' style="height: 20%; width; 100%;">
+          <div class='title log-box' style='position: relative; height: 100%; font-size: 1.5rem; width: 45%; flex-grow: 1;'>それ以前…</div>
+        </div>
+        <transition-group
+          name='history-list-each'
+          :css='false'
+          style='height: 80%; position: relative; display: flex; flex-direction: column; flex-shrink: 1;'
+          tag='div'
+          @before-enter='beforeEnter'
+          @enter='enter'
+          >
+          <div
+            v-for='(history, ind) in initLogs'
+            :key='history.sequential_id'
+            class='log-box each-history w-12'
+            :data-ind='ind'
+            >
+            <div class="time-view" style='padding:0;font-size: 3.5rem; vertical-align: middle;'> {{history.name}} </div>
+            <div class='timer' style='font-size: 1.5rem;'>{{history.time.split(" ")[1]}}</div>
+          </div>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -51,6 +63,7 @@ const axios = axiosBase.create({
 });
 
 const logMax = 10;
+const displayRefersh = 60;
 export default {
   name: 'App',
   data: () => {
@@ -58,9 +71,18 @@ export default {
       logs: [],
       userName: "",
       error: false,
+      countDown: 1,
     }
   },
   methods: {
+    beforeEnter: function(el){
+      el.style.cssText = `transform: translateX(600px); margin-left: calc(0.5rem + ${el.dataset.indind*0.5}rem)`
+    },
+    enter: function(el, done){
+      setTimeout(function () {
+        el.style.cssText = `margin-left: calc(0.5rem + ${el.dataset.ind*0.5}rem)`
+      }, 50 * el.dataset.ind + 200)
+    },
   },
   mounted: async function () {
     try{
@@ -72,13 +94,19 @@ export default {
         this.logs = [];
         history.data.forEach(d => this.logs.push(d));
         this.userName = this.logs[0].user
-        console.log(this.logs)
-        console.log(this.logs[0])
-        console.log(this.userName)
+        this.countDown = displayRefersh;
       })
       this.socket.on('masterPassFailed', (obj) => {
         this.error = true;
       })
+      setInterval(() => {
+        this.countDown--
+        if(this.countDown <= 0){
+          this.countDown = 0;
+          this.logs = []
+          this.userName = ""
+        }
+      }, 1000)
     } catch(e) {
       console.log('booting failed')
       console.log(e)
@@ -87,6 +115,15 @@ export default {
   computed: {
     initLogs: function () {
       return this.logs.slice(1,5)
+    },
+    determineFontSize: function () {
+      return name => {
+        let length = 0;
+        for(let i = 0; i < name.length; i++){
+          length += Math.min(encodeURIComponent(name[i]).replace(/%../g,"x").length, 2)
+        }
+        return 4.0 - Math.max(length-10, 0) * 0.3;
+      }
     }
   },
   components: {
@@ -98,39 +135,20 @@ export default {
 div{
   color: #fc7;
 }
-div>span{
-  display: flex;
-  width: calc(75% - 1.5rem);
-  margin-right: 1.5rem;
-  margin-bottom: 1rem;
-  flex-direction: column;
-  height: calc(100% - 1rem);
-  flex-wrap: wrap;
-}
 #wrap{
   display: flex;
   height: 100%;
 }
 .basic-info{
-  width: 25%;
+  width: 30%;
   height: 100%;
 }
 .history-view{
   display: flex;
-  width: calc(75% - 3rem);
+  width: calc(70% - 1.5rem);
+  margin-left: 0;
   flex-direction: column;
   align-items: center;
-}
-.history{
-  display: flex;
-}
-.split{
-  width: 100%;
-}
-.each-value{
-  height: 50%;
-  display: flex;
-  flex-direction: column;
 }
 .each-logs div, .each-logs span{
   margin: 0;
@@ -162,25 +180,8 @@ div>span{
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-}
-.column{
-  width: 40%;
-  color: #fc7;
-  font-weight: bolder;
-  font-size: 1.3rem;
-}
-.value{
-  width: 60%;
-  color: #fc7;
-  font-size: 1.3rem;
-}
-.heoad{
-  height: 60%;
-}
-.rests{
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  transition-property: transform;
+  transition-duration: 0.3s;
 }
 .title-wrapper{
   width: 100%;
@@ -195,13 +196,17 @@ div>span{
 .image-wrapper{
   display: flex;
   place-content: center center;
+}
+.image-wrapper-animation{
+  animation: piston 3s linear infinite alternate;
   height:100%;
-  animation: piston 3s infinite alternate linear
 }
 .cube-tan{
+  position: absolute;
   width: 65%;
-  animation: rotate 5s linear infinite;
   align-self: center;
+  transition: all 0.3s;
+  animation: rotate 5s linear infinite;
 }
 @keyframes piston{
   0%{transform: translateY(-120px);}
@@ -215,10 +220,15 @@ div>span{
 .user-name{
   display: flex;
   height: 70%;
-  font-size: 4rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.first-history-enter-active{
+  transition: transform .2s;
+}
+.first-history-enter{
+  transform: translateX(600px);
 }
 </style>
