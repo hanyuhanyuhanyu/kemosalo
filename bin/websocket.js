@@ -28,9 +28,9 @@ module.exports = function(io){
       const l = await lanes.getAll();
 
       const intervalId = setInterval(async () => {
+        console.log(`send pingo`)
         l.forEach(async lane => {
           try{
-            console.log(`send ping to ${lane.ip}`)
             const ret = await pingCmd(lane.ip)
             const address = ret.match(/(\d{1,3}\.){3}\d{1,3}/)[0];
             const time = ret.match(/\d+\.?\d+(?=\sms)/)[0];

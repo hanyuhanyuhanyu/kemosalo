@@ -44,10 +44,10 @@ router.get('/history/:card', async function(req, res, next) {
   }
 });
 const buildResponse = (obj) => {
-  return {sequential_id: obj.sequential_id, ip: obj.ip, time: new Date(obj.time).toLocaleString(), name: obj.lane_name, card: obj.card_id}
+  return {sequential_id: obj.sequential_id, ip: obj.ip, time: new Date(obj.time).toLocaleString(), name: obj.lane_name, card: obj.card_id, user: obj.user_name}
 }
 const buildFailedResponse = (obj, card) => {
-  return {ip: obj.ip, time: new Date().toLocaleString(), name: obj.name || "not found", card}
+  return {ip: obj.ip, time: new Date().toLocaleString(), name: obj.name || "not found", card, user: obj.card_name}
 }
 router.post('/pass/master', async function(req, res, next) {
   const card = req.body.card;
