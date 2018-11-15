@@ -22,3 +22,5 @@ insert into lane (ip, name, kind) values ('192.168.20.69','lane9', 'slave');
 insert into lane (ip, name, kind) values ('192.168.20.70','lane10', 'slave');
 
 insert into user (card_id, name) values ('testCard','tester');
+insert into user (card_id, name) values ('dasi','だし');
+insert into user (card_id, name) values ('keishi','ケイシ');

@@ -7,6 +7,11 @@ html{
   height: 100%;
   color: #cb964d;
 }
+input {
+  background-color: #cb964d;
+  color: #222;
+  border: solid 2.2px #8e6429;
+}
 body{
   background-color: rgb(106,62,0);
   margin: 0;

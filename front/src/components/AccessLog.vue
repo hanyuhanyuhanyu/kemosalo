@@ -1,7 +1,7 @@
 <template>
   <div class='accessLog'>
-    <transition-group name='logs' id='trans' tag='span'>
-      <div class='each-log log-box' v-for='log in logs' :key='log.id' style='display: block; height: 100%;'>
+    <transition-group name='logs' id='trans' tag='span' style='height: 100%;'>
+      <div class='each-log log-box' v-for='log in logs' :key='log.id'>
         <div class="data-box">
           <div class="columns">
             <div class="column">Card</div>

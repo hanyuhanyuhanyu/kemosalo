@@ -1,5 +1,5 @@
 <template>
-  <div id='main' class='log-box'>
+  <div id='main' class='log-box' style='align-items: center;'>
     {{logOut}}{{cursor}}
   </div>
 </template>
