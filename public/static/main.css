@@ -1,0 +1,102 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  height: 100%;
+  color: #cb964d;
+}
+body{
+  background-color: rgb(106,62,0);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+#trans: {
+  height: 100%;
+}
+#overlay-effect{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.2) 80%, rgba(0,0,0,0.5) 100%);
+  box-sizing: border-box; 
+}
+#app{
+  margin: 2rem 3rem;
+  height: calc(100% - 4rem);
+  width: calc(100% - 6rem);
+  border: solid 2.2px #8e6429;
+  box-sizing: border-box; 
+  z-index: 5;
+}
+#kemosalo-logo{
+  position: absolute;
+  top: 0 ;
+  left:0;
+  right:0;
+  bottom:0;
+  margin: auto;
+  z-index:-1;
+  width: 70%;
+}
+.log-box{
+  display: flex;
+  margin: 1rem 1.5rem;
+  border: solid 2.2px #8e6429;
+  text-align: start;
+  box-sizing: border-box; 
+}
+.padding{
+  padding-left: 0.5rem;
+}
+.w-2{
+  width: calc(16.6666% - 3rem);
+}
+.w-4{
+  width: calc(33.3333% - 3rem);
+}
+.w-8{
+  width: calc(66.6666% - 3rem);
+}
+.w-10{
+  width: calc(83.3333% - 3rem);
+}
+.w-12{
+  width: calc(100% - 3rem);
+}
+.h-1{
+  height: calc(8.3333% - 2rem);
+}
+.h-2{
+  height: calc(16.6666% - 2rem);
+}
+.h-3{
+  height: calc(25% - 2rem);
+}
+.h-4{
+  height: calc(33.3333% - 2rem);
+}
+.h-5{
+  height: calc(41.6666% - 2rem);
+}
+.h-6{
+  height: calc(50% - 2rem);
+}
+.h-8{
+  height: calc(66.6666% - 2rem);
+}
+.h-9{
+  height: calc(75% - 2rem);
+}
+.h-12{
+  height: calc(100% - 2rem);
+}

@@ -1,7 +1,7 @@
 <template>
-  <div id="accessLog" class='accessLog'>
+  <div class='accessLog'>
     <transition-group name='logs' id='trans' tag='span'>
-      <div class='each-log log-box' v-for='log in logs' :key='log.id'>
+      <div class='each-log log-box' v-for='log in logs' :key='log.id' style='display: block; height: 100%;'>
         <div class="data-box">
           <div class="columns">
             <div class="column">Card</div>
@@ -40,17 +40,10 @@ export default {
 }
 </script>
 
-<style>
-/* .logs-move{ */
-/*   transition: transform 0.3s; */
-/* } */
-#accessLog{
+<style scoped>
+.accessLog{
   display: flex;
   flex-direction: column;
-}
-#accessLog>span{
-  height: 100%;
-  display: block;
 }
 .each-log{
   font-size: 1.5rem;
@@ -72,9 +65,6 @@ export default {
 }
 .columns {
   width: 30%;
-}
-#trans: {
-  height: 100%;
 }
 </style>
 

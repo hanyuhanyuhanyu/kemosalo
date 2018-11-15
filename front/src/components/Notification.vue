@@ -1,5 +1,5 @@
 <template>
-  <div id='main' class='log-box'>
+  <div id='main' class='log-box' style='display: flex; justify-content: start; align-items: center;'>
     {{logOut}}{{cursor}}
   </div>
 </template>

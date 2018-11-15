@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 div>span{
   display: flex;
   width: calc(75% - 1.5rem);

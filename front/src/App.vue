@@ -47,7 +47,6 @@ import AccessLog from './components/AccessLog.vue';
 import MostRecentLog from './components/MostRecentLog.vue';
 import Notification from './components/Notification.vue';
 import Watcher from './components/Watcher.vue';
-import Footer from './components/Footer.vue';
 
 
 const axios = axiosBase.create({
@@ -160,12 +159,11 @@ export default {
     'most-recent-log': MostRecentLog,
     'notification': Notification,
     'watcher': Watcher,
-    'foot': Footer,
   }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

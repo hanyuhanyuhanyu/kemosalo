@@ -1,5 +1,5 @@
 <template>
-  <div id='main' class='log-box style'>
+  <div id='main' class='log-box'>
     {{logOut}}{{cursor}}
   </div>
 </template>
@@ -54,9 +54,3 @@ export default {
   }
 }
 </script>
-<style>
-.style{
-  display: flex;
-  justify-content: center;
-}
-</style>
