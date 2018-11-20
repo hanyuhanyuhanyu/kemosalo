@@ -16,6 +16,10 @@
             間違えた？
           </button>
         </div>
+        <div v-if='nextPrompt' class='next-prompt-wrapper log-box'>
+          <div v-html='nextPrompt' class='next-prompt'>
+          </div>
+        </div>
       </div>
     </transition>
     <div style='height: 30%; width: 100%; display: flex; align-items: flex-end; justify-content: center; font-size: 3rem; flex-direction: column;'>
@@ -30,7 +34,7 @@
     </div>
     <div v-if="card" class='log-box' style='display: flex; justify-content: start; align-items: center; flex-direction: column'>
       <input v-model='name' placeholder='名前を入力してください' type="text" class='name-input' style='' >
-      <transition name='error'>
+      <transition name='erro'>
         <div v-if='error' class='log-box error'>
           {{error}}
         </div>
@@ -81,6 +85,8 @@ export default {
       registerButton: newRegister,
       nameBuffer: "",
       additionalPrompt: null,
+      nextPrompt: null,
+      promptTimeout: null,
     }
   },
   methods: {
@@ -95,6 +101,10 @@ export default {
       params.append('name', this.name)
       axios.post('/user/register', params).then(res => {
           this.confirmation = res.data
+          this.promptTimeout = setTimeout(() => {
+            this.nextPrompt = '次のカードを登録する場合<br>カードを読み込んでください'
+            console.log(this.nextPrompt)
+          }, 3000)
         }
       ).catch(error => {
           this.warning = [
@@ -113,6 +123,10 @@ export default {
       this.init()
     },
     init: function(){
+      if(this.promptTimeout){
+        clearTimeout(this.promptTimeout)
+      }
+      this.nextPrompt = null
       this.name = ""
       this.nameBuffer = ""
       this.registerButton = newRegister
@@ -244,7 +258,7 @@ export default {
   top: 0;
 }
 .confirmed-enter, .confirmed-leave-to{
-  top: -320px;
+  top: -1000px;
 }
 .warn-enter-active, .warn-leave-active{
   bottom: 0;
@@ -257,5 +271,22 @@ export default {
 }
 .error-enter, .error-leave-to{
   transform: scaleY(0);
+}
+.next-prompt{
+  animation: blink 1s alternate infinite;
+}
+.next-prompt-wrapper{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 3rem;
+  margin: 0;
+  font-size: 2rem;
+  padding: 1rem;
+}
+@keyframes blink{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
 }
 </style>
