@@ -91,7 +91,12 @@ module.exports = function(io){
         return
       }
       io.to(makeRegisterRoomKey(obj.id)).emit('blankCardRead', obj)
-
+    })
+    socket.on('readNotBlankCard', async (key,val,obj) => {
+      if(!await collate(key, val)){
+        return
+      }
+      io.to(makeRegisterRoomKey(obj.id)).emit('notBlankCardRead', obj)
     })
   })
   return io

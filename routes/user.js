@@ -41,6 +41,7 @@ router.get('/read/:id/:card', async function(req, res, next){
   const data = await userService.findByCard(card)
   if(data){
     res.status(400)
+    webSocket.notBlankCardRead({id, card, data});
     res.send('このカードはすでに登録されています（ブランクではない）')
     return
   }
@@ -51,7 +52,7 @@ router.get('/read/:id/:card', async function(req, res, next){
 router.post('/register', async function(req, res, next) {
   try{
     const result = await userService.register(req.body)
-    let returnMessage = ''
+    let returnMessage = req.body.name
     let statusCode = 200
     if(result.isErr){
       returnMessage = result.message

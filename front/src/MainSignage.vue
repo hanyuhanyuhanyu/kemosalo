@@ -1,5 +1,5 @@
 <template>
-  <div id='wrap'>
+  <div id='wrap' style='overflow: hidden'>
     <div class='basic-info'>
       <span v-if='error'>
         error!
@@ -16,7 +16,7 @@
     <div class='history-view log-box h-12'>
       <div class="title-wrapper">
         <div class="title log-box">
-          {{logs[0] ? '通過履歴' : 'カード読み取りを待っています'}}
+          {{logs[0] ? '通過履歴' : 'カード読み取りを待っています'}}{{cursor}}
         </div>
       </div>
       <transition name='first-history'>
@@ -57,6 +57,7 @@
 const selfip = process.env.KEMOSALO_SERVER_IP
 const axiosBase = require('axios');
 import LaneStatus from './assets/laneStatus.js';
+import Winker from './assets/winker.js';
 import Log from './assets/Log.js';
 const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
@@ -72,6 +73,7 @@ export default {
       userName: "",
       error: false,
       countDown: 1,
+      cursorOn: true,
     }
   },
   methods: {
@@ -85,6 +87,7 @@ export default {
     },
   },
   mounted: async function () {
+    Winker(() => this.cursorOn = !this.cursorOn)
     try{
       this.socket = io(`ws://${selfip}:3000`);
       this.socket.emit('mainSignageInitialize')
@@ -124,6 +127,9 @@ export default {
         }
         return 4.0 - Math.max(length-10, 0) * 0.3;
       }
+    },
+    cursor: function(){
+      return this.cursorOn ? "_" : " "
     }
   },
   components: {

@@ -69,9 +69,6 @@ export default {
   font-size: 1.8rem;
   width: 50%;
 }
-::-webkit-input-placeholder{
-  color: #000;
-}
 .search-box{
   padding: 0.3rem;
   font-size: 2rem;
