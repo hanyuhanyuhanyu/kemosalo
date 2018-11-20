@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a v-if='href' :href='href' class='text log-box'>
+    <a v-if='href' :href='href' class='text'>
       {{str}}
     </a>
     <s v-else class='text'>
@@ -26,7 +26,6 @@ export default {
 
 <style scoped>
 .text{
-  font-size: 2rem;
   color: #cb964d;
   transition: .15s;
   overflow: hidden;
