@@ -225,7 +225,8 @@ export default {
   height: 100%;
   border-left: 2px solid #cb964d;
   border-right: 2px solid #cb964d;
-  transition: transform  0.2s;
+  margin-bottom: 0;
+  transition: all  0.2s;
 }
 .upper-on{
   transform: rotate(45deg);
