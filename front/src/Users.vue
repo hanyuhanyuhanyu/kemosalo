@@ -4,19 +4,28 @@
       ユーザ検索:<input class='search' v-model='searching' placeholder='ユーザの名前を入力してください'>
     </div>
     <div class='controller'>
-  
-      <div class='arrow-wrapper log-box' style='margin: 0.5rem 0 0.5rem 0.5rem;'>
+      <div 
+        class='arrow-wrapper log-box'
+        :class='{"hoverable" : leftPrompt!=="止"}'
+        style='margin: 0.5rem 0 0.5rem 0.5rem;'
+        @click='prev'
+        >
         <div class="arrow-wrapper-inner">
           <div class="arrow-kanji">
             {{leftPrompt}}
           </div>
           <div class="arrow-itself">
-            <div class="arrow-upper" :class='{"upper-on": rightPrompt!=="止"}'></div>
-            <div class="arrow-downer" :class='{"downer-on": rightPrompt!=="止"}'></div>
+            <div class="arrow-upper" :class='{"upper-on": leftPrompt!=="止"}'></div>
+            <div class="arrow-downer" :class='{"downer-on": leftPrompt!=="止"}'></div>
           </div>
         </div>
       </div>
-      <div class='wrap'>
+      <!-- <transition&#45;group -->
+      <!--   class='wrap' -->
+      <!--   name='users' -->
+      <!--   tag='div' -->
+      <!--   > -->
+      <div class="wrap">
         <link-box v-for='user in matchedUserSliced'
           :key='user.id'
           :str='makeUserString(user)'
@@ -24,8 +33,14 @@
           class='link log-box'
           >
         </link-box>
+      <!-- </transition&#45;group> -->
       </div>
-      <div class='arrow-wrapper log-box' style='margin: 0.5rem 0.5rem 0.5rem 0;'>
+      <div
+        class='arrow-wrapper log-box'
+        :class='{"hoverable" : rightPrompt!=="止"}'
+        style='margin: 0.5rem 0.5rem 0.5rem 0;'
+        @click='next'
+        >
         <div class="arrow-wrapper">
           <div class="arrow-kanji">
             {{rightPrompt}}
@@ -57,6 +72,7 @@ export default {
       defaultIndex: 0, //検索条件を指定していない場合に用いるindex
       ephemeralIndex: 0, //検索条件を指定シている場合に用いるindex。検索ワードが変わるたびに0に初期化されるので、'ephemeral'
       watchingDefault: true,
+      lastPushedIsRight: true,
     } 
   },
   methods: {
@@ -68,6 +84,20 @@ export default {
           var chr = match.charCodeAt(0) - 0x60;
           return String.fromCharCode(chr);
       });
+    },
+    prev: function(){
+      if(this.leftPrompt === '止'){
+        return
+      }
+      this.lastPushedIsRight = false
+      this.watchingDefault ? this.defaultIndex-- : this.ephemeral--
+    },
+    next: function(){
+      if(this.rightPrompt === '止'){
+        return
+      }
+      this.lastPushedIsRight = true
+      this.watchingDefault ? this.defaultIndex++ : this.ephemeral++
     }
   },
   mounted: function () {
@@ -91,7 +121,7 @@ export default {
       if(this.searching !== ""){
         index = this.ephemeralIndex
       }
-      return this.matchedUserRaw.slice(index * onePage, index * onePage + oneChunk)
+      return this.matchedUserRaw.slice(index * oneChunk, index * oneChunk + oneChunk)
     },
     leftPrompt: function(){
       let checker = this.ephemeralIndex
@@ -148,6 +178,7 @@ export default {
   margin: 0.5rem 1rem;
   height: calc(10% - 1.0rem);
   width: calc(50% - 2rem);
+  /* transition: all 0.3s; */
 }
 .controller{
   display: flex;
@@ -168,19 +199,17 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.arrow-wrapper, .arrow-wrapper>*{
-  transition: all 0.2s !important;
-}
-.arrow-wrapper:hover{
+/* .arrow-wrapper, .arrow-kanji, .arrow-itself, .arrow-upper, .arrow-downer, .arrow-wrapper-inner{ */
+/*   transition: all 0.2s  */
+/* } */
+.hoverable:hover, .hoverable:hover>*{
   background-color: #cb964d;
+  color: rgb(106,62,0);
+  cursor: pointer;
 }
-.arrow-wrapper:hover>*{
-  background-color: #cb964d;
-  color: #8e6429;
-}
-.arrow-wrapper:hover .arrow-upper, .arrow-wrapper:hover .arrow-downer{
-  border-left: 2px solid #8e6429;
-  border-right: 2px solid #8e6429;
+.hoverable:hover .arrow-upper, .hoverable:hover .arrow-downer{
+  border-left: 2px solid rgb(106,62,0);
+  border-right: 2px solid rgb(106,62,0);
 }
 .arrow-kanji{
   display: flex;
@@ -196,14 +225,14 @@ export default {
   height: 100%;
   border-left: 2px solid #cb964d;
   border-right: 2px solid #cb964d;
-  border-radius: 3px;
+  transition: transform  0.2s;
 }
 .upper-on{
   transform: rotate(45deg);
-  margin-bottom: -5px;
+  margin-bottom: -5.0px;
 }
 .downer-on{
   transform: rotate(-45deg);
-  margin-top: -5px;
+  margin-top: -5.0px;
 }
 </style>
