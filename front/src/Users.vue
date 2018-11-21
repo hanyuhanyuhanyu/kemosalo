@@ -4,11 +4,20 @@
       ユーザ検索:<input class='search' v-model='searching' placeholder='ユーザの名前を入力してください'>
     </div>
     <div class='controller'>
-      <div class='left-arrow log-box'>
-        {{leftPrompt}}
+  
+      <div class='arrow-wrapper log-box' style='margin: 0.5rem 0 0.5rem 0.5rem;'>
+        <div class="arrow-wrapper-inner">
+          <div class="arrow-kanji">
+            {{leftPrompt}}
+          </div>
+          <div class="arrow-itself">
+            <div class="arrow-upper" :class='{"upper-on": rightPrompt!=="止"}'></div>
+            <div class="arrow-downer" :class='{"downer-on": rightPrompt!=="止"}'></div>
+          </div>
+        </div>
       </div>
       <div class='wrap'>
-        <link-box v-for='user in matchedUser'
+        <link-box v-for='user in matchedUserSliced'
           :key='user.id'
           :str='makeUserString(user)'
           :href='`/user/${user.card_id}`'
@@ -16,8 +25,16 @@
           >
         </link-box>
       </div>
-      <div class='right-arrow log-box'>
-        {{rightPrompt}}
+      <div class='arrow-wrapper log-box' style='margin: 0.5rem 0.5rem 0.5rem 0;'>
+        <div class="arrow-wrapper">
+          <div class="arrow-kanji">
+            {{rightPrompt}}
+          </div>
+          <div class="arrow-itself" style='transform: rotate(180deg);'>
+            <div class="arrow-upper" :class='{"upper-on": rightPrompt!=="止"}'></div>
+            <div class="arrow-downer" :class='{"downer-on": rightPrompt!=="止"}'></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -61,13 +78,20 @@ export default {
     }
   },
   computed: {
-    matchedUser: function(){
+    matchedUserRaw: function(){
       if(this.searching === ""){
-        return this.users.slice(this.defaultIndex * onePage, this.defaultIndex * onePage + oneChunk)
+        return this.users
       }
       return this.users.filter(user => {
-        return this.kanaToHira(user.name).match(this.kanaToHira(this.searching).slice(this.ephemeralIndex * onePage, this.ephemeralIndex * onePage + oneChunk))
+        return this.kanaToHira(user.name).match(this.kanaToHira(this.searching))
       })
+    },
+    matchedUserSliced: function(){
+      let index = this.defaultIndex
+      if(this.searching !== ""){
+        index = this.ephemeralIndex
+      }
+      return this.matchedUserRaw.slice(index * onePage, index * onePage + oneChunk)
     },
     leftPrompt: function(){
       let checker = this.ephemeralIndex
@@ -75,6 +99,13 @@ export default {
         checker = this.defaultIndex
       }
       return checker < 1 ? '止' : '前'
+    },
+    rightPrompt: function(){
+      let checker = this.ephemeralIndex
+      if(this.watchingDefault){
+        checker = this.defaultIndex
+      }
+      return this.matchedUserRaw.length > checker * oneChunk + oneChunk ? "次" : "止"
     }
   },
   watch: {
@@ -123,15 +154,56 @@ export default {
   height: 100%;
   width: 100%;
 }
-.left-arrow, .right-arrow{
+.arrow-wrapper{
   width: calc(7% - 0.5rem);
   height: calc(92% - 1rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-.left-arrow{
-  margin: 0.5rem 0 0.5rem 0.5rem;
+.arrow-wrapper-inner{
+  display: flex;
+  margin-top: -2rem;
+  flex-direction: column;
+  align-items: center;
 }
-.right-arrow{
-  margin: 0.5rem 0.5rem 0.5rem 0;
+.arrow-wrapper, .arrow-wrapper>*{
+  transition: all 0.2s !important;
 }
-
+.arrow-wrapper:hover{
+  background-color: #cb964d;
+}
+.arrow-wrapper:hover>*{
+  background-color: #cb964d;
+  color: #8e6429;
+}
+.arrow-wrapper:hover .arrow-upper, .arrow-wrapper:hover .arrow-downer{
+  border-left: 2px solid #8e6429;
+  border-right: 2px solid #8e6429;
+}
+.arrow-kanji{
+  display: flex;
+  font-size: 2rem;
+}
+.arrow-itself{
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.arrow-upper, .arrow-downer{
+  width: 0;
+  height: 100%;
+  border-left: 2px solid #cb964d;
+  border-right: 2px solid #cb964d;
+  border-radius: 3px;
+}
+.upper-on{
+  transform: rotate(45deg);
+  margin-bottom: -5px;
+}
+.downer-on{
+  transform: rotate(-45deg);
+  margin-top: -5px;
+}
 </style>

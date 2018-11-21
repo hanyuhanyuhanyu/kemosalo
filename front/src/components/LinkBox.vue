@@ -4,7 +4,7 @@
       {{str}}
     </a>
     <s v-else class='text'>
-      {{this.str}}
+      {{str}}
     </s>
   </div>
 </template>
@@ -30,6 +30,10 @@ export default {
   transition: .15s;
   overflow: hidden;
   white-space: nowrap;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 a:hover{
   color: rgb(106,62,0);
