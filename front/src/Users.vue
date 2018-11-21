@@ -20,12 +20,15 @@
           </div>
         </div>
       </div>
-      <!-- <transition&#45;group -->
-      <!--   class='wrap' -->
-      <!--   name='users' -->
-      <!--   tag='div' -->
-      <!--   > -->
-      <div class="wrap">
+      <transition-group
+        class='wrap'
+        name='users'
+        tag='div'
+        :css='false'
+        @before-enter='beforeEnter'
+        @enter='enter'
+        >
+      <!-- <div class="wrap"> -->
         <link-box v-for='user in matchedUserSliced'
           :key='user.id'
           :str='makeUserString(user)'
@@ -33,8 +36,8 @@
           class='link log-box'
           >
         </link-box>
-      <!-- </transition&#45;group> -->
-      </div>
+      </transition-group>
+      <!-- </div> -->
       <div
         class='arrow-wrapper log-box'
         :class='{"hoverable" : rightPrompt!=="止"}'
@@ -76,6 +79,13 @@ export default {
     } 
   },
   methods: {
+    beforeEnter: function(el){
+      const offset = this.lastPushedIsRight ? '1000px' : '-1000px'
+      el.style.cssText = `transform: translateX(${offset});`
+    },
+    enter: function(el){
+      setTimeout(()=>el.style.cssText = 'transform: translateX(0);', 1);
+    },
     makeUserString: function(user){
       return `${user.name}さん(cardno:${user.card_id})`
     },
@@ -155,6 +165,9 @@ export default {
   z-index: 5;
   height: 100%;
   width: 100%;
+  display:flex;
+  flex-direction:column;
+  flex-wrap: no-wrap;
 }
 .search{
   font-size: 1.8rem;
@@ -170,7 +183,8 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 92%;
+  height: 100%;
+  overflow: hidden;
   width: 86%;
 }
 .link{
@@ -178,16 +192,17 @@ export default {
   margin: 0.5rem 1rem;
   height: calc(10% - 1.0rem);
   width: calc(50% - 2rem);
-  /* transition: all 0.3s; */
+  transition: transform 0.3s;
 }
 .controller{
   display: flex;
-  height: 100%;
+  flex-wrap: nowrap;
+  height: 92%;
   width: 100%;
 }
 .arrow-wrapper{
   width: calc(7% - 0.5rem);
-  height: calc(92% - 1rem);
+  height: calc(100% - 1rem);
   display: flex;
   flex-direction: column;
   align-items: center;
