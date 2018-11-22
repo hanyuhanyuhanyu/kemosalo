@@ -3,9 +3,9 @@
     <a v-if='href' :href='href' class='text'>
       {{str}}
     </a>
-    <s v-else class='text'>
+    <span v-else class='text'>
       {{str}}
-    </s>
+    </span>
   </div>
 </template>
 

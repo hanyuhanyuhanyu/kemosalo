@@ -4,22 +4,14 @@
       ユーザ検索:<input class='search' v-model='searching' placeholder='ユーザの名前を入力してください'>
     </div>
     <div class='controller'>
-      <div 
+      <arrow
         class='arrow-wrapper log-box'
-        :class='{"hoverable" : leftPrompt!=="止"}'
         style='margin: 0.5rem 0 0.5rem 0.5rem;'
-        @click='prev'
-        >
-        <div class="arrow-wrapper-inner">
-          <div class="arrow-kanji">
-            {{leftPrompt}}
-          </div>
-          <div class="arrow-itself">
-            <div class="arrow-upper" :class='{"upper-on": leftPrompt!=="止"}'></div>
-            <div class="arrow-downer" :class='{"downer-on": leftPrompt!=="止"}'></div>
-          </div>
-        </div>
-      </div>
+        :prompt='leftPrompt'
+        :stopping='leftPrompt==="止"'
+        @func='prev'
+      >
+      </arrow>
       <transition-group
         class='wrap'
         name='users'
@@ -28,7 +20,6 @@
         @before-enter='beforeEnter'
         @enter='enter'
         >
-      <!-- <div class="wrap"> -->
         <link-box v-for='user in matchedUserSliced'
           :key='user.id'
           :str='makeUserString(user)'
@@ -37,23 +28,15 @@
           >
         </link-box>
       </transition-group>
-      <!-- </div> -->
-      <div
+      <arrow
         class='arrow-wrapper log-box'
-        :class='{"hoverable" : rightPrompt!=="止"}'
         style='margin: 0.5rem 0.5rem 0.5rem 0;'
-        @click='next'
-        >
-        <div class="arrow-wrapper">
-          <div class="arrow-kanji">
-            {{rightPrompt}}
-          </div>
-          <div class="arrow-itself" style='transform: rotate(180deg);'>
-            <div class="arrow-upper" :class='{"upper-on": rightPrompt!=="止"}'></div>
-            <div class="arrow-downer" :class='{"downer-on": rightPrompt!=="止"}'></div>
-          </div>
-        </div>
-      </div>
+        :prompt='rightPrompt'
+        :stopping='rightPrompt==="止"'
+        :righty='true'
+        @func='next'
+      >
+      </arrow>
     </div>
   </div>
 </template>
@@ -65,6 +48,7 @@ const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
 });
 import LinkBox from './components/LinkBox.vue';
+import Arrow from './components/Arrow.vue';
 const onePage = 10
 const oneChunk = 20
 export default {
@@ -156,6 +140,7 @@ export default {
   },
   components: {
     'link-box': LinkBox,
+    'arrow': Arrow,
   }
 }
 </script>
@@ -207,48 +192,5 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.arrow-wrapper-inner{
-  display: flex;
-  margin-top: -2rem;
-  flex-direction: column;
-  align-items: center;
-}
-/* .arrow-wrapper, .arrow-kanji, .arrow-itself, .arrow-upper, .arrow-downer, .arrow-wrapper-inner{ */
-/*   transition: all 0.2s  */
-/* } */
-.hoverable:hover, .hoverable:hover>*{
-  background-color: #cb964d;
-  color: rgb(106,62,0);
-  cursor: pointer;
-}
-.hoverable:hover .arrow-upper, .hoverable:hover .arrow-downer{
-  border-left: 2px solid rgb(106,62,0);
-  border-right: 2px solid rgb(106,62,0);
-}
-.arrow-kanji{
-  display: flex;
-  font-size: 2rem;
-}
-.arrow-itself{
-  height: 40px;
-  display: flex;
-  flex-direction: column;
-}
-.arrow-upper, .arrow-downer{
-  width: 0;
-  height: 100%;
-  border-left: 2px solid #cb964d;
-  border-right: 2px solid #cb964d;
-  margin-bottom: 0;
-  transition: all  0.2s;
-}
-.upper-on{
-  transform: rotate(45deg);
-  margin-bottom: -5.0px;
-}
-.downer-on{
-  transform: rotate(-45deg);
-  margin-top: -5.0px;
 }
 </style>

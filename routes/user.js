@@ -27,8 +27,9 @@ router.get('/:card', async function(req, res, next){
       res.send('このカードは未登録です')
       return
     }
-    const ret = await passageService.findByCard(req.params.card, false, -1);
-    res.send(ret.object)
+    const his = await passageService.findByCard(req.params.card, false, -1);
+    const user = await userService.findByCard(req.params.card)
+    res.send({user: user, history: his.object})
   } catch(e){
     console.log(e)
     res.status(500)

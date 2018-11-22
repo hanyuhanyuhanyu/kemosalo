@@ -89,3 +89,4 @@ insert into user (card_id, name) values ('61','61');
 insert into user (card_id, name) values ('62','62');
 insert into user (card_id, name) values ('63','63');
 insert into user (card_id, name) values ('64','64');
+insert into user (card_id, name) values ('64','放浪娘');
