@@ -5,10 +5,10 @@
         error!
       </span>
       <div style='height:100%; position: relative;'>
-        <div v-if='logs[0]' class="user-name" :style='{fontSize: determineFontSize(userName) + "rem"}'>
+        <div v-if='noLogs || logs[0]' class="user-name" :style='{fontSize: determineFontSize(userName) + "rem"}'>
           {{userName}}<br><div style='font-size: 2rem;'>さん</div>
         </div>
-        <div :class='{"image-wrapper-animation": !logs[0]}' class='image-wrapper'>
+        <div :class='{"image-wrapper-animation": !(noLogs || logs[0])}' class='image-wrapper'>
           <img src='/images/companion_cube.png' class='cube-tan'>
         </div>
       </div>
@@ -16,10 +16,15 @@
     <div class='history-view log-box h-12'>
       <div class="title-wrapper">
         <div class="title log-box">
-          {{logs[0] ? '通過履歴' : 'カード読み取りを待っています'}}{{cursor}}
+          {{noLogs || logs[0] ? '通過履歴' : 'カード読み取りを待っています'}}{{cursor}}
         </div>
       </div>
-      <transition name='first-history'>
+      <div class='no-logs' v-if='noLogs'>
+        WELCOME!
+      </div>
+      <transition
+        name='first-history'
+        >
         <div v-if='logs[0]' class="log-box w-12 each-logs" style='height: 40%;'>
           <div class='title log-box' style='font-size: 2.5rem; width: 45%;'>直近</div>
           <div class="time-view"> {{logs[0].name}} </div>
@@ -74,6 +79,7 @@ export default {
       error: false,
       countDown: 1,
       cursorOn: true,
+      noLogs: false,
     }
   },
   methods: {
@@ -92,12 +98,16 @@ export default {
       this.socket = io(`ws://${selfip}:3000`);
       this.socket.emit('mainSignageInitialize')
       this.socket.on('masterPass', async (obj) => {
-        const history = await axios.get('/gate/history/' + obj.card);
+        this.noLogs = false
+        const ret = await axios.get('/gate/history/' + obj.card);
         this.error = false;
         this.logs = [];
-        history.data.forEach(d => this.logs.push(d));
-        this.userName = this.logs[0].user
+        ret.data.history.forEach(d => this.logs.push(d));
+        this.userName = ret.data.user.name
         this.countDown = displayRefersh;
+        if(this.logs.length < 1){
+          this.noLogs = true
+        }
       })
       this.socket.on('masterPassFailed', (obj) => {
         this.error = true;
@@ -236,5 +246,15 @@ div{
 }
 .first-history-enter{
   transform: translateX(600px);
+}
+.no-logs{
+  position: absolute;
+  height: 70%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 6rem;
 }
 </style>

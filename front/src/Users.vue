@@ -4,14 +4,16 @@
       ユーザ検索:<input class='search' v-model='searching' placeholder='ユーザの名前を入力してください'>
     </div>
     <div class='controller'>
-      <arrow
-        class='arrow-wrapper log-box'
-        style='margin: 0.5rem 0 0.5rem 0.5rem;'
-        :prompt='leftPrompt'
-        :stopping='leftPrompt==="止"'
-        @func='prev'
-      >
-      </arrow>
+      <div class="arrow-overlay">
+        <arrow
+          class='arrow-wrapper log-box'
+          style='margin: 0.5rem 0 0.5rem 0.5rem;'
+          :prompt='leftPrompt'
+          :stopping='leftPrompt==="止"'
+          @func='prev'
+        >
+        </arrow>
+      </div>
       <transition-group
         class='wrap'
         name='users'
@@ -28,15 +30,17 @@
           >
         </link-box>
       </transition-group>
-      <arrow
-        class='arrow-wrapper log-box'
-        style='margin: 0.5rem 0.5rem 0.5rem 0;'
-        :prompt='rightPrompt'
-        :stopping='rightPrompt==="止"'
-        :righty='true'
-        @func='next'
-      >
-      </arrow>
+      <div class="arrow-overlay">
+        <arrow
+          class='arrow-wrapper log-box'
+          style='margin: 0.5rem 0.5rem 0.5rem 0;'
+          :prompt='rightPrompt'
+          :stopping='rightPrompt==="止"'
+          :righty='true'
+          @func='next'
+        >
+        </arrow>
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +68,7 @@ export default {
   },
   methods: {
     beforeEnter: function(el){
-      const offset = this.lastPushedIsRight ? '1000px' : '-1000px'
+      const offset = this.lastPushedIsRight ? '1960px' : '-1960px'
       el.style.cssText = `transform: translateX(${offset});`
     },
     enter: function(el){
@@ -103,6 +107,7 @@ export default {
   },
   computed: {
     matchedUserRaw: function(){
+      this.lastPushedIsRight = true //shut up linter!
       if(this.searching === ""){
         return this.users
       }
@@ -178,6 +183,7 @@ export default {
   height: calc(10% - 1.0rem);
   width: calc(50% - 2rem);
   transition: transform 0.3s;
+  padding-left: 0.5rem;
 }
 .controller{
   display: flex;
@@ -186,11 +192,17 @@ export default {
   width: 100%;
 }
 .arrow-wrapper{
-  width: calc(7% - 0.5rem);
-  height: calc(100% - 1rem);
+  width: 100%;
+  height: calc(95% - 1rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.arrow-overlay{
+  display: flex;
+  height:100%;
+  width: 7%;
+  align-items: center;
 }
 </style>

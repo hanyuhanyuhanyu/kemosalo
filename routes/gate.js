@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const PassageService = require('../lib/service/PassageService.js');
+const UserService = require('../lib/service/userService.js');
 const LaneService = require('../lib/service/LaneService.js');
 const WebSocket = require('../lib/websocket/websocket.js');
 
 const passService = new PassageService();
+const userService = new UserService();
 const laneService = new LaneService();
 const webSocket = new WebSocket();
 
@@ -33,9 +35,13 @@ router.get('/all', async function(req, res, next) {
 router.get('/history/:card', async function(req, res, next) {
   try {
     const message = await passService.findByCard(req.params.card);
+    const user = await userService.findByCard(req.params.card);
     res.status(200);
-    const ret = [];
-    message.object.forEach(o => ret.push(buildResponse(o)))
+    const ret = {
+      user: user,
+      history: [],
+    };
+    message.object.forEach(o => ret.history.push(buildResponse(o)))
     res.send(ret)
   } catch (e){
     console.log(e)

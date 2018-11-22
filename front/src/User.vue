@@ -4,15 +4,18 @@
       <span style='font-size: larger;'>{{user.name}}</span>さんの履歴です
     </div>
     <div class='controller'>
-      <arrow
-        class='arrow-wrapper log-box'
-        style='margin: 0.5rem 0 0.5rem 0.5rem;'
-        :prompt='leftPrompt'
-        :stopping='leftPrompt==="止"'
-        @func='prev'
-      >
-      </arrow>
+      <div class="arrow-overlay">
+        <arrow
+          class='arrow-wrapper log-box'
+          style='margin: 0.5rem 0 0.5rem 0.5rem;'
+          :prompt='leftPrompt'
+          :stopping='leftPrompt==="止"'
+          @func='prev'
+        >
+        </arrow>
+      </div>
       <transition-group
+        v-if='history.length > 0'
         class='wrap'
         name='users'
         tag='div'
@@ -29,15 +32,20 @@
           >
         </link-box>
       </transition-group>
-      <arrow
-        class='arrow-wrapper log-box'
-        style='margin: 0.5rem 0.5rem 0.5rem 0;'
-        :prompt='rightPrompt'
-        :stopping='rightPrompt==="止"'
-        :righty='true'
-        @func='next'
-      >
-      </arrow>
+      <div class='wrap' style='justify-content: center; align-items: center; font-size: 2rem' v-else>
+        {{user.name}}さんはまだ一度も<br>クロークを利用していないようです
+      </div>
+      <div class="arrow-overlay">
+        <arrow
+          class='arrow-wrapper log-box'
+          style='margin: 0.5rem 0.5rem 0.5rem 0;'
+          :prompt='rightPrompt'
+          :stopping='rightPrompt==="止"'
+          :righty='true'
+          @func='next'
+        >
+        </arrow>
+      </div>
     </div>
   </div>
 </template>
@@ -57,12 +65,12 @@ export default {
       user: {},
       historyOrigin: [],
       index: 0,
-      lastPushedIsRight: false,
+      lastPushedIsRight: true,
     } 
   },
   methods: {
     beforeEnter: function(el){
-      const offset = this.lastPushedIsRight ? '1000px' : '-1000px'
+      const offset = this.lastPushedIsRight ? '1960px' : '-1960px'
       el.style.cssText = `transform: translateX(${offset});`
     },
     enter: function(el){
@@ -135,14 +143,14 @@ export default {
 #user{
   font-size: 2.5rem;
   padding: 0.3rem;
-  height: 7%;
+  height: 8%;
   display: flex;
   align-items: center;
 }
 .controller{
   display: flex;
   flex-wrap: nowrap;
-  height: 93%;
+  height: 92%;
   width: 100%;
 }
 .wrap{
@@ -154,8 +162,8 @@ export default {
   width: 86%;
 }
 .arrow-wrapper{
-  width: calc(7% - 0.5rem);
-  height: calc(100% - 1rem);
+  width: 100%;
+  height: calc(95% - 1rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,5 +175,12 @@ export default {
   height: calc(10% - 1.0rem);
   width: calc(50% - 2rem);
   transition: transform 0.3s;
+  padding-left: 0.5rem;
+}
+.arrow-overlay{
+  display: flex;
+  height:100%;
+  width: 7%;
+  align-items: center;
 }
 </style>
