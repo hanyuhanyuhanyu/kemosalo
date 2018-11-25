@@ -19,6 +19,7 @@ router.get('/read/:card', async function(req, res, next) {
     const histories = await cardService.getAllHistories(req.params.card);
     res.status(200);
     webSocket.broadcastCardHistory({
+      name: card.name,
       card: req.params.card,
       histories: histories.object
     })

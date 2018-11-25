@@ -6,6 +6,7 @@ export default class Log {
     this.card = obj.card || null
     this.time = obj.time || null
     this.error = obj.error || null
+    this.user = obj.user || null
   }
 }
 

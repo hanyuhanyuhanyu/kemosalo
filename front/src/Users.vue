@@ -75,7 +75,7 @@ export default {
       setTimeout(()=>el.style.cssText = 'transform: translateX(0);', 1);
     },
     makeUserString: function(user){
-      return `${user.name}さん(cardno:${user.card_id})`
+      return `${user.name}(cardno:${user.card_id})`
     },
     kanaToHira: function(str){
       return str.replace(/[\u30a1-\u30f6]/g, function(match) {

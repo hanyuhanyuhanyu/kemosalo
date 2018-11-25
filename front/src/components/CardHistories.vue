@@ -88,7 +88,6 @@ div>span{
   margin: 0.5rem 1.5rem;
   height: calc(10% - 1.1rem);
   width: 33.3333%;
-  flex-grow: 1;
   transition-property: transform;
   transition-duration: 0.3s;
 }

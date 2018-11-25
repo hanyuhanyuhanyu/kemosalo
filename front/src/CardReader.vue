@@ -2,6 +2,7 @@
   <div id='wrapper'>
     <card-sign
       :card='card'
+      :name='name'
       :cursorOn='cursorOn'
       class='log-box w-12 card-name'
     >
@@ -32,6 +33,7 @@ export default {
       histories: [],
       card: false,
       cursorOn: false,
+      name: false,
     }
   },
   methods: {
@@ -44,7 +46,7 @@ export default {
       this.socket = io(`ws://${selfip}:3000`);
       this.socket.emit('cardReaderInitialize')
       this.socket.on('cardRead', (obj) => {
-        console.log(obj)
+        this.name = obj.name
         this.card = obj.card
         this.histories = obj.histories
       })

@@ -70,7 +70,7 @@ const axiosBase = require('axios');
 const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
 });
-const newRegister = "ケモサロ参加書として登録する"
+const newRegister = "ケモサロに参加する"
 const retypeName = "名前を変更する"
 const readACard = 'カードを読み取ってください' 
 export default {

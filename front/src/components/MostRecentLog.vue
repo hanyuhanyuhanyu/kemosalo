@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     toLog: function(obj){
-      return `${obj.card}が${obj.time.split(' ')[1]}に${obj.name}(IP:${obj.ip})を通過しました`
+      return `${obj.user}さんが${obj.time.split(' ')[1]}に${obj.name}(IP:${obj.ip})を通過しました`
     }
   },
   mounted: function () {

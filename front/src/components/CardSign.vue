@@ -7,12 +7,15 @@
 <script>
 export default {
   props:{
+    name: {
+      default: false
+    },
     card: {
       default: undefined
     },
     cursorOn: {
       default: false
-    }
+    },
   },
   data: () => {
     return {
@@ -36,9 +39,6 @@ export default {
     }, 15)
   },
   computed:{
-    cardName: function(){
-      return this.card ? `読取成功: ${this.card}の履歴は以下の通りです` : "カードを読み込んでください"
-    },
     cursor: function(){
       return this.cursorOn ? "_" : " ";
     }
@@ -46,7 +46,7 @@ export default {
   watch: {
     card: function (val){
       this.cardOut = "";
-      this.buffer = `読取成功: ${val}の履歴は以下の通りです` 
+      this.buffer = `読取成功: ${this.name}さん(${val})の履歴は以下の通りです` 
     }
   } 
 }
