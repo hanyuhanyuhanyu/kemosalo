@@ -117,7 +117,7 @@ export default {
     reset: function(){
       this.warning = [
         "名前の変更を取り消しました",
-        `（このカードの持ち主は${this.name}さんのまま変更されていません）`,
+        `（このカードの持ち主は${this.oldName}さんのまま変更されていません）`,
         "別のカードの登録をするならばカードを読み込んでください"
       ]
       this.init()
@@ -145,6 +145,7 @@ export default {
       this.additionalPrompt = `このカードは${obj.data.name}さんで登録されています`
       this.registerButton = retypeName
       this.name = obj.data.name
+      this.oldName = this.name
       this.nameBuffer = obj.data.name
     }
   },
