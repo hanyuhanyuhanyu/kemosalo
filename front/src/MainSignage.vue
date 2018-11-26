@@ -6,7 +6,12 @@
       </span>
       <div style='height:100%; position: relative;'>
         <div v-if='noLogs || logs[0]' class="user-name" :style='{fontSize: determineFontSize(userName) + "rem"}'>
-          {{userName}}<br><div style='font-size: 2rem;'>さん</div>
+          <span v-if='userName' class='user-name'>
+            {{userName}}<br><div style='font-size: 2rem;'>さん</div>
+          </span>
+          <span v-else class='user-name' style='color: #ff0'>
+            名前が登録<br>されていません！
+          </span>
         </div>
         <div :class='{"image-wrapper-animation": !(noLogs || logs[0])}' class='image-wrapper'>
           <img src='/images/companion_cube.png' class='cube-tan'>
@@ -103,7 +108,8 @@ export default {
         this.error = false;
         this.logs = [];
         ret.data.history.forEach(d => this.logs.push(d));
-        this.userName = ret.data.user.name
+        const usr = ret.data.user
+        this.userName = usr ? usr.name : null
         this.countDown = displayRefersh;
         if(this.logs.length < 1){
           this.noLogs = true
@@ -131,6 +137,9 @@ export default {
     },
     determineFontSize: function () {
       return name => {
+        if(name === null){
+          return 4.0;
+        }
         let length = 0;
         for(let i = 0; i < name.length; i++){
           length += Math.min(encodeURIComponent(name[i]).replace(/%../g,"x").length, 2)
