@@ -6,7 +6,8 @@
     "b": "node ./bin/www",
     "f": "pushd front ; npm run dev ; popd",
     "initTbl": "rm history.sqlite3; sqlite3 history.sqlite3 '.read schema'",
-    "setup": "sudo git pull ; npm run initTbl ; sudo rm -r node_modules/portal* ; sudo wget -O node_modules/portal.zip 'https://drive.google.com/uc?export=download&id=152yd180s96giVnuIETEkkQYKPZgNqDJQ' && sudo unzip node_modules/portal.zip -d node_modules/portal && sudo mkdir public/images ; sudo rm public/images/* ; sudo mv node_modules/portal/* public/images ; sudo rm -r node_modules/portal*; sudo npm install ; cd front ; sudo npm install ; cd .."
+    "setup": "sudo git pull ; npm run initTbl ; sudo rm -r node_modules/portal* ; sudo wget -O node_modules/portal.zip 'https://drive.google.com/uc?export=download&id=152yd180s96giVnuIETEkkQYKPZgNqDJQ' && sudo unzip node_modules/portal.zip -d node_modules/portal && sudo mkdir public/images ; sudo rm public/images/* ; sudo mv node_modules/portal/* public/images ; sudo rm -r node_modules/portal*; sudo npm install ; cd front ; sudo npm install ; cd ..",
+    "endurance": "node ./test/endurance.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -19,6 +20,7 @@
     "morgan": "~1.9.0",
     "redis": "^2.8.0",
     "socket.io": "^2.1.1",
-    "sqlite3": "4.0.4"
+    "sqlite3": "4.0.4",
+    "websocket": "^1.0.28"
   }
 }
