@@ -1,7 +1,7 @@
 const local = process.argv.some(a => a === '-l' || a === '--local')
 
 if(local){
-  console.log('execute test with local mode (set server id address as 127.0.0.1)')
+  console.log('\033[1;36mexecute test with local mode (set server id address as 127.0.0.1)')
 }
 
 Array.prototype.sample = function(){
@@ -41,6 +41,17 @@ const masterFail = 'masterFail'
 const slavePass = 'slavePass'
 const slaveFail = 'slaveFail'
 const cardRead = 'cardRead'
+
+const consoleColor = {}
+consoleColor[blankRead] = '\033[1;36mblankCardRead'
+consoleColor[notBlankRead] = '\033[0;36mnotBlankRead'
+consoleColor[conAsc] = '\033[0;34mconAsc'
+consoleColor[conLost] = '\033[0;37mconLost'
+consoleColor[masterPass] = '\033[1;33mmasterPass'
+consoleColor[masterFail] = '\033[0;33mmasterFail'
+consoleColor[slavePass] = '\033[0;35mslavePass'
+consoleColor[slaveFail] = '\033[1;35mslaveFail'
+consoleColor[cardRead] = '\033[0;32mcardRead'
 
 const registerPer = 10
 const passPer = 10 * 60 
