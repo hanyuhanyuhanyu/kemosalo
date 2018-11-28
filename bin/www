@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 const initRedis = require('../lib/redis/Initializer.js');
 const webSocketSetting = require('./websocket.js');
+const db = require('../lib/repository/database.js');
 
 initRedis();
+db().run('PRAGMA busy_timeout = 3000')
 
 /**
  * Module dependencies.

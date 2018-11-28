@@ -1,7 +1,7 @@
 const local = process.argv.some(a => a === '-l' || a === '--local')
 
 if(local){
-  console.log('\033[1;36mexecute test with local mode (set server id address as 127.0.0.1)')
+  console.log('execute test with local mode (set server id address as 127.0.0.1)')
 }
 
 Array.prototype.sample = function(){
@@ -43,15 +43,15 @@ const slaveFail = 'slaveFail'
 const cardRead = 'cardRead'
 
 const consoleColor = {}
-consoleColor[blankRead] = '\033[1;36mblankCardRead'
-consoleColor[notBlankRead] = '\033[0;36mnotBlankRead'
-consoleColor[conAsc] = '\033[0;34mconAsc'
-consoleColor[conLost] = '\033[0;37mconLost'
-consoleColor[masterPass] = '\033[1;33mmasterPass'
-consoleColor[masterFail] = '\033[0;33mmasterFail'
-consoleColor[slavePass] = '\033[0;35mslavePass'
-consoleColor[slaveFail] = '\033[1;35mslaveFail'
-consoleColor[cardRead] = '\033[0;32mcardRead'
+consoleColor[blankRead] = '\033[1;36m'
+consoleColor[notBlankRead] = '\033[0;36m'
+consoleColor[conAsc] = '\033[0;34m'
+consoleColor[conLost] = '\033[0;37m'
+consoleColor[masterPass] = '\033[1;33m'
+consoleColor[masterFail] = '\033[0;33m'
+consoleColor[slavePass] = '\033[0;35m'
+consoleColor[slaveFail] = '\033[1;35m'
+consoleColor[cardRead] = '\033[0;32m'
 
 const registerPer = 10
 const passPer = 10 * 60 
@@ -69,7 +69,7 @@ initialize(
 function log(sign, event, string){
   const spacify = str => (str + ' '.repeat(logSpace)).slice(0, logSpace)
   const output = `${spacify(sign)}${spacify(event)} ${Date.now()} ${string}`
-  console.log(output)
+  console.log(consoleColor[event.replace(/Rec$/, '')] + output)
   fs.appendFile(`./test_result/${out_log}`, output +  '\n', err => {if(err){console.log(err)}})
 }
 
@@ -130,7 +130,7 @@ async function runTest(func){
   }
   const read = async (mycard) => {
     log('cardRead', cardRead, `card ${mycard} read`)
-    axios.get(`/card/read/${mycard}`)
+    axios.get(`/card/read/${mycard}`).catch(err => console.log(err.response))
   }
   const registerMachineNum = 3
   setInterval(async () => {
