@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a v-if='href' :href='href' class='text'>
+    <a v-if='href' :href='href' class='text' :style='given'>
       {{str}}
     </a>
     <span v-else class='text'>
@@ -17,6 +17,9 @@ export default {
     },
     href: {
       default: null,
+    },
+    given: {
+      default: '',
     }
   },
   computed: {

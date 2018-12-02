@@ -26,6 +26,7 @@
           :key='user.id'
           :str='makeUserString(user)'
           :href='`/user/${user.card_id}`'
+                  :given='"padding-left:0.5rem"'
           class='link log-box'
           >
         </link-box>
@@ -183,7 +184,6 @@ export default {
   height: calc(10% - 1.0rem);
   width: calc(50% - 2rem);
   transition: transform 0.3s;
-  padding-left: 0.5rem;
 }
 .controller{
   display: flex;

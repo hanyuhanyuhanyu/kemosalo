@@ -28,7 +28,7 @@ module.exports = function(io){
       const l = await lanes.getAll();
 
       const intervalId = setInterval(async () => {
-        console.log(`send pingo`)
+        console.log(`send ping`)
         l.forEach(async lane => {
           try{
             const ret = await pingCmd(lane.ip)

@@ -1,3 +1,4 @@
+const initialize = require('./test_common.js')
 const local = process.argv.some(a => a === '-l' || a === '--local')
 
 if(local){
@@ -63,7 +64,7 @@ for(let i = 1; i < 11; i++){
 }
 
 initialize(
-  runTest, finalize
+  serverIp, out_server, runTest, finalize
 )
 
 function log(sign, event, string){
@@ -73,20 +74,6 @@ function log(sign, event, string){
   fs.appendFile(`./test_result/${out_log}`, output +  '\n', err => {if(err){console.log(err)}})
 }
 
-function initialize(func, func2){
-  process.env.KEMOSALO_TEST = 'TESTING'
-  exec(`ping -c 3 ${serverIp}`, function(err, stdout, stderr){
-    if(err){
-      console.log(`cannot connect to ${serverIp}. terminating. you may have forgotten to activate "--local" option. `)
-      process.exit()
-      return
-    }
-    exec('rm -rf ./test_result/*')
-    exec('rm -rf ./test.sqlite3 ; sqlite3 ./test.sqlite3 ".read schema_test"')
-    exec(`node ./bin/www > ./test_result/${out_server}`) 
-    func(func2)
-  })
-}
 async function runTest(func){
   //登録用カード読み込み => ユーザ登録 最初の一時間のみ15秒ごと。以降なし。240人登録することになる。
     //3人に一人は一回目の登録で誤った名前を登録し、すぐに正しい名前での訂正リクエストを送る

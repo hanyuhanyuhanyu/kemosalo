@@ -31,7 +31,26 @@
         ></watcher>
         <operations 
           class='operations log-box w-12'
-        ></operations>
+        >
+          <link-box
+            :str='"ユーザー一覧"'
+            :href='"/user"'
+            :given='"justify-content:center"'
+            class='log-box links'
+          ></link-box>
+          <link-box
+            :str='"カード読込画面"'
+            :href='"/cardreader"'
+            :given='"justify-content:center"'
+            class='log-box links'
+          ></link-box>
+          <link-box
+            :str='"メインゲート用画面"'
+            :href='"/"'
+            :given='"justify-content:center"'
+            class='log-box links'
+          ></link-box>
+        </operations>
       </div>
     </div>
   </div>
@@ -47,7 +66,7 @@ import AccessLog from './components/AccessLog.vue';
 import MostRecentLog from './components/MostRecentLog.vue';
 import Notification from './components/Notification.vue';
 import Watcher from './components/Watcher.vue';
-
+import LinkBox from './components/LinkBox.vue';
 
 const axios = axiosBase.create({
   baseURL: `http://${selfip}:3000/api`
@@ -157,6 +176,7 @@ export default {
     'most-recent-log': MostRecentLog,
     'notification': Notification,
     'watcher': Watcher,
+    'link-box': LinkBox,
   }
 }
 </script>
@@ -206,6 +226,8 @@ export default {
 }
 .operations{
   height: calc(21.3333% - 2rem);
+  display: flex;
+  width: calc(100% - 3rem);
 }
 .wrapper{
   height: 100%;
@@ -223,5 +245,10 @@ export default {
 }
 .watcher{
   flex-grow: 1;
+}
+.links{
+  font-size: 2rem;
+  margin: 1rem 0rem 1rem 1.5rem;
+  width: calc(33.33% - 2rem);
 }
 </style>
