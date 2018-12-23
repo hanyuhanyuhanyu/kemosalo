@@ -128,11 +128,11 @@ export default {
         this.addErrorLogs(obj);
       })
       this.socket.on('slavePass', (obj) => {
-        console.log('slavePass', lane)
+        console.log('slavePass')
         this.addLog(obj);
       })
       this.socket.on('slavePassFailed', (obj) => {
-        console.log('slavePassFailed', lane)
+        console.log('slavePassFailed')
         this.addErrorLogs(obj);
       })
     } catch(e) {
